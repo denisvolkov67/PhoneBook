@@ -18,6 +18,8 @@ namespace PhoneBook.Logic.Models
 
         public string Telephone { get; set; }
 
+        public string MobileNumber { get; set; }
+
         public string Email { get; set; }
 
     }

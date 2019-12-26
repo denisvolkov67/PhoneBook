@@ -1,0 +1,41 @@
+.line {
+  width: 100%;
+  height: 50px;
+}
+.displayName {
+  width: 20%;
+  float: left;
+  margin: 0 1px 1px 0;
+  display: table;
+}
+.description {
+  width: 20%;
+  float: left;
+  margin: 0 1px 1px 0;
+  display: table;
+}
+.telephone {
+  width: 15%;
+  float: left;
+  margin: 0 1px 1px 0;
+  display: table;
+}
+.mobileNumber {
+  width: 15%;
+  float: left;
+  border: 2px solid Red;
+  margin: 0 1px 1px 0;
+  display: table;
+}
+.email {
+  width: 20%;
+  float: left;
+  margin: 0 1px 1px 0;
+  display: table;
+}
+.office {
+  width: 8%;
+  float: left;
+  margin: 0 1px 1px 0;
+  display: table;
+}

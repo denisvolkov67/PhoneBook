@@ -24,12 +24,16 @@ namespace PhoneBook.Logic.Handlers
         public async Task<Maybe<User>> Handle(GetUserByLogin request, CancellationToken cancellationToken)
         {
             ActiveDirectoryService adService = new ActiveDirectoryService();
-            var chosenUserPrincipal = adService.GetUser(request.Login);
-            var chosenUser= _mapper.Map<User>(chosenUserPrincipal);
+            var chosenUser= _mapper.Map<User>(adService.GetUser(request.Login));
 
             if (chosenUser == null)
             {
                 _logger.LogError($"There is not a user with the Login '{request.Login}'...");
+            }
+            else
+            {
+                chosenUser.Office = adService.getOffice(chosenUser.Login);
+                chosenUser.MobileNumber = adService.getMobileNumber(chosenUser.Login);
             }
 
             return chosenUser != null ?

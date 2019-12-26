@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
-using System.Text;
 
 namespace PhoneBook.Logic.Services
 {
@@ -45,27 +43,6 @@ namespace PhoneBook.Logic.Services
             return UserPrincipal.FindByIdentity(oPrincipalContext, IdentityType.SamAccountName, sUserName);
         }
 
-        public PrincipalSearchResult<Principal> GetUsersByName(string sUserName)
-        {
-            PrincipalContext oPrincipalContext = GetPrincipalContext();
-
-            //Create a "user object" in the context
-            UserPrincipal user = new UserPrincipal(oPrincipalContext);
-
-            //Specify the search parameters
-            user.Name = sUserName;
-
-            //Create the searcher
-            //pass (our) user object
-            PrincipalSearcher pS = new PrincipalSearcher();
-            pS.QueryFilter = user;
-
-            //Perform the search
-            PrincipalSearchResult<Principal> results = pS.FindAll();
-
-            return results;
-        }
-
         public PrincipalSearchResult<Principal> GetUsersByDisplayName(string sUserName)
         {
             PrincipalContext oPrincipalContext = GetPrincipalContext();
@@ -74,28 +51,7 @@ namespace PhoneBook.Logic.Services
             UserPrincipal user = new UserPrincipal(oPrincipalContext);
 
             //Specify the search parameters
-            user.DisplayName = sUserName;
-
-            //Create the searcher
-            //pass (our) user object
-            PrincipalSearcher pS = new PrincipalSearcher();
-            pS.QueryFilter = user;
-
-            //Perform the search
-            PrincipalSearchResult<Principal> results = pS.FindAll();
-
-            return results;
-        }
-
-        public PrincipalSearchResult<Principal> GetUsersByLogin(string sLogin)
-        {
-            PrincipalContext oPrincipalContext = GetPrincipalContext();
-
-            //Create a "user object" in the context
-            UserPrincipal user = new UserPrincipal(oPrincipalContext);
-
-            //Specify the search parameters
-            user.SamAccountName = sLogin;
+            user.DisplayName = sUserName + "*";
 
             //Create the searcher
             //pass (our) user object
@@ -131,64 +87,6 @@ namespace PhoneBook.Logic.Services
 
         #endregion
 
-        #region Методы управления учетными записями
-   
-        /// <summary>
-        /// Редактирование пользователя Active Directory
-        /// </summary>
-        /// <param name="sUserName">Имя пользователя</param>
-        /// <param name="sGivenName">Имя</param>
-        /// <param name="sSurName">Фамилия</param>
-        /// <returns>Возвращает объект UserPrincipal</returns>
-        public UserPrincipal EditUser(string sUserName, string sGivenName, string sSurName, string sDescription, string sOffice, string sTelephone, string sEmail,
-            DateTime? sAccountExpiries, bool sExpirePassword, bool sPasswordNeverExpires, bool sUserCannotChangePassword, bool sEnableAccount)
-        {
-            if (sOffice == null) sOffice = " ";
-
-
-            if (!IsUserExisiting(sUserName))
-            {
-                //тут вернет ошибку!!
-                return GetUser(sUserName);
-            }
-            else
-            {
-                PrincipalContext oPrincipalContext = GetPrincipalContext();
-
-                UserPrincipal oUserPrincipal = GetUser(sUserName);
-                oUserPrincipal.GivenName = sGivenName;
-                oUserPrincipal.Surname = sSurName;
-                oUserPrincipal.DisplayName = sSurName + " " + sGivenName;
-                oUserPrincipal.Description = sDescription;
-                oUserPrincipal.VoiceTelephoneNumber = sTelephone;
-                oUserPrincipal.EmailAddress = sEmail;
-                oUserPrincipal.AccountExpirationDate = sAccountExpiries;
-
-                if (sExpirePassword)
-                    oUserPrincipal.ExpirePasswordNow();
-                oUserPrincipal.PasswordNeverExpires = sPasswordNeverExpires;
-                oUserPrincipal.UserCannotChangePassword = sUserCannotChangePassword;
-                oUserPrincipal.Enabled = sEnableAccount;
-
-                oUserPrincipal.Save();
-
-                using (var entry = (DirectoryEntry)oUserPrincipal.GetUnderlyingObject())
-                {
-                    try
-                    {
-                        if (entry.Properties["physicalDeliveryOfficeName"].Count == 0) entry.Properties["physicalDeliveryOfficeName"].Add(sOffice);
-                        else entry.Properties["physicalDeliveryOfficeName"][0] = sOffice;
-                        entry.CommitChanges();
-                    }
-                    catch { }
-                }
-
-                return oUserPrincipal;
-            }
-        }
-
-        #endregion
-
         #region Вспомогательные методы
 
         /// <summary>
@@ -208,6 +106,68 @@ namespace PhoneBook.Logic.Services
         public PrincipalContext GetPrincipalContext(string sOU)
         {
             return new PrincipalContext(ContextType.Domain, _domain, string.IsNullOrEmpty(sOU) ? _defaultOU : sOU, _serviceUser, _servicePassword);
+        }
+
+        /// <summary>
+        /// Получить кабинет пользователя
+        /// </summary>
+        /// <param name="sLogin">Имя пользователя для которого нужно получить номер кабинета</param>
+        /// <returns>Возвращает объект String</returns>
+        public string getOffice(string sLogin)
+        {
+            string filter = string.Format("(&(ObjectClass={0})(sAMAccountName={1}))", "person", sLogin);
+            string domain = "BTRC";
+            string[] properties = new string[] { "physicalDeliveryOfficeName" };
+
+            DirectoryEntry adRoot = new DirectoryEntry("LDAP://" + domain, null, null, AuthenticationTypes.Secure);
+            DirectorySearcher searcher = new DirectorySearcher(adRoot);
+            searcher.SearchScope = SearchScope.Subtree;
+            searcher.ReferralChasing = ReferralChasingOption.All;
+            searcher.PropertiesToLoad.AddRange(properties);
+            searcher.Filter = filter;
+
+            SearchResult result = searcher.FindOne();
+            DirectoryEntry directoryEntry = result.GetDirectoryEntry();
+
+            if (directoryEntry.Properties["physicalDeliveryOfficeName"].Count > 0)
+            {
+                return directoryEntry.Properties["physicalDeliveryOfficeName"][0].ToString();
+            }
+            else
+            {
+                return String.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Получить мобильный номер пользователя
+        /// </summary>
+        /// <param name="sLogin">Имя пользователя для которого нужно получить мобильный номер</param>
+        /// <returns>Возвращает объект String</returns>
+        public string getMobileNumber(string sLogin)
+        {
+            string filter = string.Format("(&(ObjectClass={0})(sAMAccountName={1}))", "person", sLogin);
+            string domain = "BTRC";
+            string[] properties = new string[] { "mobile" };
+
+            DirectoryEntry adRoot = new DirectoryEntry("LDAP://" + domain, null, null, AuthenticationTypes.Secure);
+            DirectorySearcher searcher = new DirectorySearcher(adRoot);
+            searcher.SearchScope = SearchScope.Subtree;
+            searcher.ReferralChasing = ReferralChasingOption.All;
+            searcher.PropertiesToLoad.AddRange(properties);
+            searcher.Filter = filter;
+
+            SearchResult result = searcher.FindOne();
+            DirectoryEntry directoryEntry = result.GetDirectoryEntry();
+
+            if (directoryEntry.Properties["mobile"].Count > 0)
+            {
+                return directoryEntry.Properties["mobile"][0].ToString();
+            }
+            else
+            {
+                return String.Empty;
+            }
         }
 
         #endregion

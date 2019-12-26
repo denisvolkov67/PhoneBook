@@ -1,0 +1,13 @@
+<div class="" *ngIf="user">
+  <p class="">displayName: {{user?.displayName}}</p>
+  <p class="">surname: {{user?.surname}}</p>
+  <p class="">givenName: {{user?.givenName}}</p>
+  <p class="">description: {{user?.description}}</p>
+  <p class="">telephone: {{user?.telephone}}</p>
+  <p class="">mobileNumber: {{user?.mobileNumber}}</p>
+  <p class="">email: {{user?.email}}</p>
+  <p class="">office: {{user?.office}}</p>
+</div>
+<div class="" *ngIf="!user">
+  <p class="">Not found user!</p>
+</div>
