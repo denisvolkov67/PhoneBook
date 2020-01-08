@@ -8,11 +8,15 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 import { UserService } from './api/user.service';
+import { AdministrativeStaffComponent } from './components/administrative-staff/administrative-staff.component';
+import { SearchComponent } from './components/search/search.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
-    UserComponent
+    UserComponent,
+    AdministrativeStaffComponent,
+    SearchComponent
   ],
   imports:
   [
@@ -21,6 +25,7 @@ import { UserService } from './api/user.service';
     RouterModule
   ],
   exports: [
+    RouterModule,
     HomeComponent,
     UserComponent
   ],

@@ -1,1 +1,54 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import '../node_modules/bootstrap/scss/bootstrap.scss';
+
+.line {
+  width: 100%;
+  margin-left: 0;
+  height: 50px;
+}
+.displayName {
+  width: 20%;
+  float: left;
+  // text-align: center;
+  margin: 0 1px 1px 10px;
+  display: table;
+}
+.description {
+  width: 20%;
+  float: left;
+  text-align: center;
+  margin: 0 1px 1px 0;
+  display: table;
+}
+.telephone {
+  width: 15%;
+  float: left;
+  text-align: center;
+  margin: 0 1px 1px 0;
+  display: table;
+}
+.mobileNumber {
+  width: 15%;
+  float: left;
+  text-align: center;
+  margin: 0 1px 1px 0;
+  display: table;
+}
+.email {
+  width: 20%;
+  height: 50px;
+  float: left;
+  text-align: center;
+  margin: 0 1px 1px 0;
+  display: table;
+}
+.office {
+  width: 8%;
+  float: left;
+  text-align: center;
+  margin: 0 1px 1px 0;
+  display: table;
+}
+
+

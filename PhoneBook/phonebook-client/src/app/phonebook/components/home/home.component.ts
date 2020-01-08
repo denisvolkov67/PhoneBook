@@ -12,13 +12,7 @@ export class HomeComponent implements OnInit {
 
   users: User[] = [];
 
-  constructor(private userService: UserService) {
-    this.userService.userGetUsersFromAdministrativeStaff().subscribe(x => {
-      this.users = x;
-    },
-    (err: HttpErrorResponse) => {
-      return console.log(err.error);
-    });
+  constructor() {
   }
 
   ngOnInit() {
