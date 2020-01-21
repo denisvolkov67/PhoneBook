@@ -2,6 +2,7 @@ import { UserService } from './phonebook/api/user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'Phone Book';
   phoneBookGroup: FormGroup;
+  faSearch = faSearch;
 
   constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {
     this.phoneBookGroup = this.fb.group({

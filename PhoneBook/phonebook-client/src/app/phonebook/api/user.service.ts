@@ -26,7 +26,8 @@ import { Configuration }                                     from '../configurat
 @Injectable()
 export class UserService {
 
-    protected basePath = 'https://localhost:44312';
+    protected basePath = 'http://api.phonebook.btrc.local';
+    // protected basePath = 'https://localhost:44312';
     public defaultHeaders = new HttpHeaders();
     public configuration = new Configuration();
 
@@ -86,7 +87,7 @@ export class UserService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<User>(`${this.basePath}/api/user/${encodeURIComponent(String(login))}`,
+        return this.httpClient.request<User>('get',`${this.basePath}/user/${encodeURIComponent(String(login))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -127,7 +128,7 @@ export class UserService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<User>>(`${this.basePath}/api/users/${encodeURIComponent(String(name))}`,
+        return this.httpClient.request<Array<User>>('get',`${this.basePath}/users/${encodeURIComponent(String(name))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -163,7 +164,43 @@ export class UserService {
         const consumes: string[] = [
         ];
 
-        return this.httpClient.get<Array<User>>(`${this.basePath}/api/usersFromAdministrativeStaff`,
+        return this.httpClient.request<Array<User>>('get',`${this.basePath}/usersFromAdministrativeStaff`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     *
+     *
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public userGetUsersFromHRDepartment(observe?: 'body', reportProgress?: boolean): Observable<Array<User>>;
+    public userGetUsersFromHRDepartment(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<User>>>;
+    public userGetUsersFromHRDepartment(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<User>>>;
+    public userGetUsersFromHRDepartment(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Array<User>>('get',`${this.basePath}/usersFromHRDepartment`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

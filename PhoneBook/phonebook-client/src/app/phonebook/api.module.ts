@@ -1,3 +1,4 @@
+import { NotExistsComponent } from './components/not-exists/not-exists.component';
 import { User } from './model/user';
 import { RouterModule } from '@angular/router';
 import { UserComponent } from './components/user/user.component';
@@ -10,13 +11,16 @@ import { CommonModule } from '@angular/common';
 import { UserService } from './api/user.service';
 import { AdministrativeStaffComponent } from './components/administrative-staff/administrative-staff.component';
 import { SearchComponent } from './components/search/search.component';
+import { HrDepartmentComponent } from './components/hr-department/hr-department.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     UserComponent,
     AdministrativeStaffComponent,
-    SearchComponent
+    SearchComponent,
+    NotExistsComponent,
+    HrDepartmentComponent
   ],
   imports:
   [

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.DirectoryServices;
 using System.DirectoryServices.AccountManagement;
 
@@ -45,18 +46,24 @@ namespace PhoneBook.Logic.Services
 
         public PrincipalSearchResult<Principal> GetUsersByDisplayName(string sUserName)
         {
+            if (sUserName.Contains("*"))
+            {
+                sUserName = sUserName.Replace("*", "");
+            }
             PrincipalContext oPrincipalContext = GetPrincipalContext();
 
             //Create a "user object" in the context
             UserPrincipal user = new UserPrincipal(oPrincipalContext);
 
             //Specify the search parameters
-            user.DisplayName = sUserName + "*";
+            user.DisplayName = "*" + sUserName + "*";
+
 
             //Create the searcher
             //pass (our) user object
             PrincipalSearcher pS = new PrincipalSearcher();
             pS.QueryFilter = user;
+            (pS.GetUnderlyingSearcher() as DirectorySearcher).SizeLimit = 50;
 
             //Perform the search
             PrincipalSearchResult<Principal> results = pS.FindAll();
@@ -125,6 +132,7 @@ namespace PhoneBook.Logic.Services
             searcher.ReferralChasing = ReferralChasingOption.All;
             searcher.PropertiesToLoad.AddRange(properties);
             searcher.Filter = filter;
+            searcher.PageSize = 50;
 
             SearchResult result = searcher.FindOne();
             DirectoryEntry directoryEntry = result.GetDirectoryEntry();

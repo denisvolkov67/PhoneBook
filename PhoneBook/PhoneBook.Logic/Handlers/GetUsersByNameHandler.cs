@@ -27,6 +27,8 @@ namespace PhoneBook.Logic.Handlers
             ActiveDirectoryService adService = new ActiveDirectoryService();
             List<User> chosenUsers = _mapper.Map<List<User>>(adService.GetUsersByDisplayName(request.Name));
 
+            chosenUsers.Sort();
+
             if (chosenUsers == null)
             {
                 _logger.LogError($"There are not users with the Name '{request.Name}'...");

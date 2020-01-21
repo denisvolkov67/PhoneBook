@@ -1,10 +1,9 @@
-import { NotExistsComponent } from './../not-exists/not-exists.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @NgModule({
-  declarations: [NotExistsComponent],
+  declarations: [ ],
   imports: [CommonModule],
-  exports: [NotExistsComponent]
+  exports: [ ]
 })
 export class SharedModule { }

@@ -2,7 +2,7 @@
 
 namespace PhoneBook.Logic.Models
 {
-    public class User
+    public class User : IComparable
     {
         public string Login { get; set; }
 
@@ -21,6 +21,15 @@ namespace PhoneBook.Logic.Models
         public string MobileNumber { get; set; }
 
         public string Email { get; set; }
+
+        public int CompareTo(object o)
+        {
+            User u = o as User;
+            if (u != null)
+                return this.DisplayName.CompareTo(u.DisplayName);
+            else
+                throw new Exception("Невозможно сравнить два объекта");
+        }
 
     }
 }

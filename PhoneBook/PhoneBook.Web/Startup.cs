@@ -61,6 +61,7 @@ namespace PhoneBook.Web
             app.UseCors(opt =>
                 opt.AllowAnyHeader()
                     .AllowAnyMethod()
+                    .WithOrigins("http://phonebook.btrc.local")
                     .WithOrigins("http://localhost:4200")
                     .AllowCredentials());
 
@@ -81,7 +82,7 @@ namespace PhoneBook.Web
                 .MinimumLevel.Information()
                 .WriteTo.Console()
                 .WriteTo.Debug()
-                .WriteTo.SQLite(Path.Combine(Environment.CurrentDirectory, @"..\PhoneBook.Web\phonebook.db"))
+                //.WriteTo.SQLite(Path.Combine(Environment.CurrentDirectory, @"\phonebook.db"))
                 .CreateLogger();
         }
     }
