@@ -1,3 +1,4 @@
+import { EmployeesService } from './phonebook/api/employees.service';
 import { UserService } from './phonebook/api/user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -14,7 +15,7 @@ export class AppComponent implements OnInit {
   phoneBookGroup: FormGroup;
   faSearch = faSearch;
 
-  constructor(private fb: FormBuilder, private userService: UserService, private router: Router) {
+  constructor(private fb: FormBuilder, private employeesService: EmployeesService, private router: Router) {
     this.phoneBookGroup = this.fb.group({
       search: ['', [Validators.required, Validators.minLength(3)]]
     });
@@ -24,9 +25,9 @@ export class AppComponent implements OnInit {
 
   onSubmit(form: FormGroup) {
     console.log(form.value.search);
-    this.userService.userGetUsersByName(form.value.search).subscribe(r =>  {
+    this.employeesService.employeesGetEmployeesByName(form.value.search).subscribe(r =>  {
       console.log(r);
-      this.router.navigate(['/users', form.value.search]);
+      this.router.navigate(['/employees', form.value.search]);
     });
   }
 }

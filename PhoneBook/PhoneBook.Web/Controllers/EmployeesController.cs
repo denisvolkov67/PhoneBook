@@ -33,7 +33,7 @@ namespace PhoneBook.Web.Controllers
         [SwaggerResponse(HttpStatusCode.OK, typeof(Employee), Description = "Success")]
         [SwaggerResponse(HttpStatusCode.NotFound, typeof(void), Description = "Employee not found")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
-        public async Task<IActionResult> GetEmployeesByDepartmentIdnAsync(string id)
+        public async Task<IActionResult> GetEmployeesByDepartmentIdAsync(string id)
         {
             if (String.IsNullOrEmpty(id))
             {
@@ -44,13 +44,10 @@ namespace PhoneBook.Web.Controllers
 
             return employees.HasValue ? (IActionResult)Ok(employees.Value) : NotFound();
         }
-
-        /// <summary>
-        /// Fetches users from the AD and from administrative staff.
-        /// </summary>        
+      
         [HttpGet("employees/{name}")]
-        [SwaggerResponse(HttpStatusCode.OK, typeof(IEnumerable<User>), Description = "Success")]
-        [SwaggerResponse(HttpStatusCode.NotFound, typeof(void), Description = "Users not found")]
+        [SwaggerResponse(HttpStatusCode.OK, typeof(IEnumerable<Employee>), Description = "Success")]
+        [SwaggerResponse(HttpStatusCode.NotFound, typeof(void), Description = "Employees not found")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
         public async Task<IActionResult> GetEmployeesByNameAsync(string name)
         {

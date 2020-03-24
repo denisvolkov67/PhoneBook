@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace PhoneBook.Logic.Handlers
 {
+
     public class GetEmployeesByNameHandler : IRequestHandler<GetEmployeesByName, Maybe<IEnumerable<Employee>>>
     {
         private readonly PhoneBookDbContext _context;
@@ -30,12 +31,12 @@ namespace PhoneBook.Logic.Handlers
         public async Task<Maybe<IEnumerable<Employee>>> Handle(GetEmployeesByName request, CancellationToken cancellationToken)
         {
             var result = await _context.Employees
-                //.Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{request.Name}%"))
-                //.Where(x => x.Name.ToUpper().Contains(request.Name.ToUpper()))
                 .Where(x => x.Name.Contains(request.Name))
+                //.Where(x => x.Name.ToUpper().Contains(request.Name.ToUpper()))
                 //.Where(x => x.Name.Contains(request.Name, StringComparison.OrdinalIgnoreCase))
+                //.Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{request.Name}%"))
+                .OrderBy(o => o.Name)
                 .Select(b => _mapper.Map<Employee>(b))
-                //.OrderBy( s => s.Name)
                 .ToListAsync()
                 .ConfigureAwait(false);
 

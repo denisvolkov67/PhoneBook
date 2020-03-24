@@ -12,14 +12,14 @@
   margin-left: 0;
   height: 50px;
 }
-.displayName {
+.name {
   width: 20%;
   float: left;
   // text-align: center;
   margin: 0 1px 1px 10px;
   display: table;
 }
-.description {
+.position {
   width: 20%;
   float: left;
   text-align: center;
@@ -33,7 +33,7 @@
   margin: 0 1px 1px 0;
   display: table;
 }
-.mobileNumber {
+.mobile {
   width: 15%;
   float: left;
   text-align: center;

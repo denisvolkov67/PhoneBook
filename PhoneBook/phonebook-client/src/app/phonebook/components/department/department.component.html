@@ -1,4 +1,17 @@
-<div class="line row">
+<div class="line" *ngFor="let department of departments">
+  <div class="line row" *ngIf="department">
+    <div class="department">
+      <a
+      class=""
+       [routerLink]="['/home/department', department.id]"
+      routerLinkActive="router-link-active"
+      >{{department?.name}}
+    </a>
+    </div>
+  </div>
+</div>
+
+<div class="line row" ng-show="showBlock">
   <div class="name">
     ФИО
   </div>
@@ -22,7 +35,7 @@
     <div class="name">
       {{employee?.name}}
     </div>
-    <div class="position">
+    <div class="description">
       {{employee?.position}}
     </div>
     <div class="telephone">
@@ -39,4 +52,3 @@
     </div>
   </div>
 </div>
-

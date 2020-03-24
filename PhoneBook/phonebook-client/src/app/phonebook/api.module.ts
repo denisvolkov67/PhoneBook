@@ -1,3 +1,5 @@
+import { EmployeesService } from './api/employees.service';
+import { DepartmentsService } from './api/departments.service';
 import { NotExistsComponent } from './components/not-exists/not-exists.component';
 import { User } from './model/user';
 import { RouterModule } from '@angular/router';
@@ -9,18 +11,16 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 
 import { UserService } from './api/user.service';
-import { AdministrativeStaffComponent } from './components/administrative-staff/administrative-staff.component';
 import { SearchComponent } from './components/search/search.component';
-import { HrDepartmentComponent } from './components/hr-department/hr-department.component';
+import { DepartmentComponent } from './components/department/department.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
     UserComponent,
-    AdministrativeStaffComponent,
+    DepartmentComponent,
     SearchComponent,
-    NotExistsComponent,
-    HrDepartmentComponent
+    NotExistsComponent
   ],
   imports:
   [
@@ -34,6 +34,8 @@ import { HrDepartmentComponent } from './components/hr-department/hr-department.
     UserComponent
   ],
   providers: [
+    DepartmentsService,
+    EmployeesService,
     UserService
   ]
 })

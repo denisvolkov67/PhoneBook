@@ -1,7 +1,7 @@
+import { Employee } from './../../model/employee';
+import { EmployeesService } from './../../api/employees.service';
 import { switchMap } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
-import { UserService } from './../../api/user.service';
-import { User } from './../../model/user';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
@@ -11,17 +11,17 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit {
-  users: User[] = [];
+  employees: Employee[] = [];
 
-  constructor(private route: ActivatedRoute, private userService: UserService) {
+  constructor(private route: ActivatedRoute, private employeesService: EmployeesService) {
     this.route.paramMap
     .pipe(
       switchMap(m => {
-        return this.userService.userGetUsersByName(m.get('name'));
+        return this.employeesService.employeesGetEmployeesByName(m.get('name'));
       })
     )
     .subscribe(result => {
-        this.users = result;
+        this.employees = result;
       },
       (err: HttpErrorResponse) => {
         return console.log(err.error);
