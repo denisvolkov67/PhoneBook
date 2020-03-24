@@ -1,5 +1,4 @@
 import { EmployeesService } from './phonebook/api/employees.service';
-import { UserService } from './phonebook/api/user.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';

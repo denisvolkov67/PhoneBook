@@ -1,23 +1,18 @@
 import { EmployeesService } from './api/employees.service';
 import { DepartmentsService } from './api/departments.service';
 import { NotExistsComponent } from './components/not-exists/not-exists.component';
-import { User } from './model/user';
 import { RouterModule } from '@angular/router';
-import { UserComponent } from './components/user/user.component';
 import { HomeComponent } from './components/home/home.component';
 import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
 import { Configuration } from './configuration';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-
-import { UserService } from './api/user.service';
 import { SearchComponent } from './components/search/search.component';
 import { DepartmentComponent } from './components/department/department.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
-    UserComponent,
     DepartmentComponent,
     SearchComponent,
     NotExistsComponent
@@ -30,13 +25,11 @@ import { DepartmentComponent } from './components/department/department.componen
   ],
   exports: [
     RouterModule,
-    HomeComponent,
-    UserComponent
+    HomeComponent
   ],
   providers: [
     DepartmentsService,
-    EmployeesService,
-    UserService
+    EmployeesService
   ]
 })
 export class ApiModule {
