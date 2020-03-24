@@ -339,3 +339,5 @@ fabric.properties
 
 
 PhoneBook/PhoneBook.Web/phonebook.db
+
+*.db

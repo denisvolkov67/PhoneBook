@@ -11,6 +11,7 @@ import { Component, OnInit } from '@angular/core';
 export class AdministrativeStaffComponent implements OnInit {
 
   users: User[] = [];
+  showBlock = false;
 
   constructor(private userService: UserService) {
     this.userService.userGetUsersFromAdministrativeStaff().subscribe(x => {

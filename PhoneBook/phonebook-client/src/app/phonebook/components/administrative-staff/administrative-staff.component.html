@@ -1,5 +1,13 @@
 <p class="department">Административно-управленческий аппарат</p>
-<div class="line row">
+<a href="#/home/administrative-staff" ng-click="showBlock= !showBlock">Административно-управленческий аппарат</a>
+<input class="favorite styled"
+       type="button"
+       ng-click="showBlock= !showBlock"
+       value="Административно-управленческий аппарат">
+
+  <input type="checkbox" ng-model="showBlock">
+
+<div class="line row" ng-show="showBlock">
   <div class="displayName">
     ФИО
   </div>
@@ -40,3 +48,5 @@
     </div>
   </div>
 </div>
+
+

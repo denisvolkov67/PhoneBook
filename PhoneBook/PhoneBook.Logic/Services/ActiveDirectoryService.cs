@@ -9,11 +9,11 @@ namespace PhoneBook.Logic.Services
     {
         #region Переменные
 
-        readonly string _domain = "**";
-        readonly string _defaultOU = "**";
-        readonly string _defaultRootOU = "**";
-        readonly string _serviceUser = "**";
-        readonly string _servicePassword = "**";
+        readonly string _domain = "btrc.local";
+        readonly string _defaultOU = "OU=test,DC=btrc,DC=local";
+        readonly string _defaultRootOU = "DC=btrc,DC=local";
+        readonly string _serviceUser = "adminAD";
+        readonly string _servicePassword = "helpdeskadmin";
 
         #endregion
 

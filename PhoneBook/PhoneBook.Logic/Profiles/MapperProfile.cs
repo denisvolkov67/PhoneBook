@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using PhoneBook.Data.Models;
+using PhoneBook.Logic.Command;
 using PhoneBook.Logic.Models;
 using System.DirectoryServices.AccountManagement;
 
@@ -17,6 +19,16 @@ namespace PhoneBook.Logic.Profiles
                 .ForMember(dest => dest.SamAccountName, e => e.MapFrom(src => src.Login))
                 .ForMember(dest => dest.VoiceTelephoneNumber, e => e.MapFrom(src => src.Telephone))
                 .ForMember(dest => dest.EmailAddress, e => e.MapFrom(src => src.Email));
+
+            CreateMap<Employee, EmployeeDb>()
+                .ForMember(dest => dest.DepartmentDbId, e => e.MapFrom(src => src.DepartmentId))
+                .ReverseMap()
+                .ForMember(dest => dest.DepartmentId, e => e.MapFrom(src => src.DepartmentDbId));
+
+            CreateMap<Department, DepartmentDb>()
+                .ReverseMap();
+
+            CreateMap<CreateEmployeeCommand, EmployeeDb>();
         }
 
     }

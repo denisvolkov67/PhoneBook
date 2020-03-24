@@ -27,7 +27,7 @@ namespace PhoneBook.Web.Controllers
         /// <summary>
         /// Fetches a user from the AD by the unique Login.
         /// </summary>        
-        [HttpGet("user/{login}")]
+        [HttpGet("api/user/{login}")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(User), Description = "Success")]
         [SwaggerResponse(HttpStatusCode.NotFound, typeof(void), Description = "User not found")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
@@ -46,7 +46,7 @@ namespace PhoneBook.Web.Controllers
         /// <summary>
         /// Fetches users from the AD and from administrative staff.
         /// </summary>        
-        [HttpGet("users/{name}")]
+        [HttpGet("api/users/{name}")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(IEnumerable<User>), Description = "Success")]
         [SwaggerResponse(HttpStatusCode.NotFound, typeof(void), Description = "Users not found")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
@@ -60,28 +60,13 @@ namespace PhoneBook.Web.Controllers
         /// <summary>
         /// Fetches users from the AD and from administrative staff.
         /// </summary>        
-        [HttpGet("usersFromAdministrativeStaff/")]
+        [HttpGet("api/usersFromAdministrativeStaff/")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(IEnumerable<User>), Description = "Success")]
         [SwaggerResponse(HttpStatusCode.NotFound, typeof(void), Description = "Users not found")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
         public async Task<IActionResult> GetUsersFromAdministrativeStaffAsync()
         {
             var users = await _mediator.Send(new GetUsersFromAdministrativeStaff());
-
-            return users.HasValue  ? (IActionResult)Ok(users.Value) : NotFound();
-        }
-
-
-        /// <summary>
-        /// Fetches users from the AD and from HR Department.
-        /// </summary>        
-        [HttpGet("usersFromHRDepartment/")]
-        [SwaggerResponse(HttpStatusCode.OK, typeof(IEnumerable<User>), Description = "Success")]
-        [SwaggerResponse(HttpStatusCode.NotFound, typeof(void), Description = "Users not found")]
-        [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
-        public async Task<IActionResult> GetUsersFromHRDepartmentAsync()
-        {
-            var users = await _mediator.Send(new GetUsersFromHRDepartment());
 
             return users.HasValue ? (IActionResult)Ok(users.Value) : NotFound();
         }
