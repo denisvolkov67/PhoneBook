@@ -38,7 +38,7 @@ namespace PhoneBook.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMediatR(typeof(GetUserByLogin).Assembly);
+            services.AddMediatR(typeof(GetEmployeesByName).Assembly);
             services.AddAutoMapper(typeof(MapperProfile).Assembly);
             services.AddSwaggerDocument(cfg =>
             {

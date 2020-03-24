@@ -35,5 +35,15 @@ namespace PhoneBook.Web.Controllers
             return departments.HasValue ? (IActionResult)Ok(departments.Value) : NotFound();
         }
 
+        [HttpGet("departments/getTopLevel")]
+        [SwaggerResponse(HttpStatusCode.OK, typeof(IEnumerable<Department>), Description = "Success")]
+        [SwaggerResponse(HttpStatusCode.NotFound, typeof(void), Description = "Departments not found")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
+        public async Task<IActionResult> GetTopLevelAsync()
+        {
+            var departments = await _mediator.Send(new GetDepartmentsTopLevel());
+
+            return departments.HasValue ? (IActionResult)Ok(departments.Value) : NotFound();
+        }
     }
 }

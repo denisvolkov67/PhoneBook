@@ -8,7 +8,7 @@ import { DepartmentComponent } from './phonebook/components/department/departmen
 
 const routes: Routes = [
   {path: 'home', component: HomeComponent},
-  {path: 'home/department/:id', component: DepartmentComponent},
+  {path: 'department/:id', component: DepartmentComponent},
   {path: 'employees/:name', component: SearchComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', component: NotExistsComponent }

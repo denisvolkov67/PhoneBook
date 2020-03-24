@@ -1,5 +1,12 @@
-<p>
-  <a class="p-2 text-dark" href routerLink="department" title = "Административно-управленческий аппарат">Административно-управленческий аппарат</a>
-</p>
+<div class="line" *ngFor="let department of departments">
+  <div class="line row" *ngIf="department">
+      <a
+      class="department-header"
+       [routerLink]="['/department', department.id]"
+      routerLinkActive="router-link-active"
+      >{{department?.name}}
+    </a>
+  </div>
+</div>
 
 

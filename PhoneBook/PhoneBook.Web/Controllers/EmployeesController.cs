@@ -30,7 +30,7 @@ namespace PhoneBook.Web.Controllers
         }
 
         [HttpGet("employees/department/{id}")]
-        [SwaggerResponse(HttpStatusCode.OK, typeof(Employee), Description = "Success")]
+        [SwaggerResponse(HttpStatusCode.OK, typeof(IEnumerable<Employee>), Description = "Success")]
         [SwaggerResponse(HttpStatusCode.NotFound, typeof(void), Description = "Employee not found")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
         public async Task<IActionResult> GetEmployeesByDepartmentIdAsync(string id)

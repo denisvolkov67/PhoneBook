@@ -15,6 +15,7 @@ import { ActivatedRoute } from '@angular/router';
 export class DepartmentComponent implements OnInit {
   employees: Employee[] = [];
   departments: Department[] = [];
+  department: Department;
 
   constructor(private route: ActivatedRoute, private employeesService: EmployeesService, private departmentsService: DepartmentsService) {
     this.route.paramMap
