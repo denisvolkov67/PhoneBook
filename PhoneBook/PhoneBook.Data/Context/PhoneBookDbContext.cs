@@ -18,7 +18,8 @@ namespace PhoneBook.Data.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             List<EmployeeDb> list = new List<EmployeeDb>();
-            using (StreamReader sr = new StreamReader(@"e:\Employee.csv", System.Text.Encoding.Default))
+            //using (StreamReader sr = new StreamReader(@"e:\Employee.csv", System.Text.Encoding.Default))
+            using (StreamReader sr = new StreamReader(@"c:\inetpub\wwwroot\api.phoneBook\Employee.csv", System.Text.Encoding.Default))
             {
                 string line;
                 long id = 1;
@@ -36,7 +37,8 @@ namespace PhoneBook.Data.Context
             }
 
             List<DepartmentDb> listDepartment = new List<DepartmentDb>();
-            using (StreamReader sr = new StreamReader(@"e:\departments.csv", System.Text.Encoding.Default))
+            //using (StreamReader sr = new StreamReader(@"e:\departments.csv", System.Text.Encoding.Default))
+            using (StreamReader sr = new StreamReader(@"c:\inetpub\wwwroot\api.phoneBook\departments.csv", System.Text.Encoding.Default))
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)
@@ -57,6 +59,13 @@ namespace PhoneBook.Data.Context
                 list.ToArray());
             modelBuilder.Entity<DepartmentDb>().HasData(
                 listDepartment.ToArray());
+
+            //modelBuilder.Entity<DepartmentDb>().HasData(
+            //    new DepartmentDb { Id = "1", Name = "Белорусское телевидение" },
+            //    new DepartmentDb { Id = "100", Name = "Генеральный продюсерский центр" },
+            //    new DepartmentDb { Id = "2", Name = "Белорусское радио" }
+            //    );
+
             base.OnModelCreating(modelBuilder);
         }
     }
