@@ -31,6 +31,8 @@ namespace PhoneBook.Data.Context
                     employee.DepartmentDbId = mass[0];
                     employee.Name = mass[1];
                     employee.Position = mass[2];
+                    employee.Name_Upper = mass[1].ToUpper();
+                    employee.Position_Upper = mass[2].ToUpper();
                     list.Add(employee);
                     id++;
                 }

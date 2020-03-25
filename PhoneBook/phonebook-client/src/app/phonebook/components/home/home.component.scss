@@ -1,6 +1,47 @@
 .department-header {
   text-align: center;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: bold;
   width: 100%;
+}
+.department-line {
+  width: 100%;
+  margin-left: 0;
+  height: 40px;
+}
+.book-info {
+  text-align: center;
+}
+.info-ueho {
+  color: green;
+}
+.info-soglasie {
+  color: red;
+}
+
+.telephones {
+  margin: 0 auto;
+}
+.spravka {
+  width: 50%;
+  float: left;
+}
+.spravka p {
+  margin-bottom: 0;
+}
+.spravka p span{
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.tel-sos {
+  width: 50%;
+  float: right;
+}
+.tel-sos p {
+  margin-bottom: 0;
+}
+.tel-sos p span{
+  font-size: 1rem;
+  font-weight: bold;
 }

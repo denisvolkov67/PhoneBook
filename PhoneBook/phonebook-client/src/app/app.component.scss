@@ -1,9 +1,9 @@
-form {
+.search {
   width: auto;
+  position: relative;
   float: right;
-  // margin-right: 30px;
 }
-input {
+.search input{
   width: 250px;
   height: 42px;
   padding-left: 15px;
@@ -11,10 +11,9 @@ input {
   border: 2px solid #324b4e;
   background: #F9F0DA;
   outline: none;
-  position: relative;
   transition: .3s linear;
 }
-input:focus {
+.search input:focus {
   width: 500px;
 }
 button {
@@ -24,8 +23,12 @@ button {
   background-size: contain;
   border: none;
   position: absolute;
-  top: 26px;
-  right: 64px;
+  top: 8px;
+  right: 8px;
 }
+.my-title {
+  margin-left: 0px !important;
+}
+
 
 

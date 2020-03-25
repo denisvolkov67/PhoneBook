@@ -21,6 +21,20 @@ export class DepartmentComponent implements OnInit {
     this.route.paramMap
     .pipe(
       switchMap(m => {
+        return this.departmentsService.departmentsGetDepartmentById(m.get('id'));
+      })
+    )
+    .subscribe(result => {
+        this.department = result;
+      },
+      (err: HttpErrorResponse) => {
+        return console.log(err.error);
+      }
+    );
+
+    this.route.paramMap
+    .pipe(
+      switchMap(m => {
         return this.departmentsService.departmentsGetSubsidiaryDepartments(m.get('id'));
       })
     )

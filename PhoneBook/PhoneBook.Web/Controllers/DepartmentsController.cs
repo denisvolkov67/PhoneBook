@@ -23,7 +23,23 @@ namespace PhoneBook.Web.Controllers
             _mediator = mediator;
             _logger = logger;
         }
-       
+
+        [HttpGet("department/{id}")]
+        [SwaggerResponse(HttpStatusCode.OK, typeof(Department), Description = "Success")]
+        [SwaggerResponse(HttpStatusCode.NotFound, typeof(void), Description = "Department not found")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
+        public async Task<IActionResult> GetDepartmentByIdAsync(string id)
+        {
+            if (String.IsNullOrEmpty(id))
+            {
+                _logger.LogError($"Incorrect value for the sessions's Id was set.");
+                return BadRequest();
+            }
+            var result = await _mediator.Send(new GetDepartmentById(id));
+
+            return result != null ? (IActionResult)Ok(result.Value) : NotFound();
+        }
+
         [HttpGet("departments/getSubsidiary/{id}")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(IEnumerable<Department>), Description = "Success")]
         [SwaggerResponse(HttpStatusCode.NotFound, typeof(void), Description = "Departments not found")]

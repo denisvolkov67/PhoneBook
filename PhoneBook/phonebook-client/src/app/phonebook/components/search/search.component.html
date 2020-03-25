@@ -17,8 +17,8 @@
   <div class="office ">
     Кабинет
   </div>
-<div class="line" *ngFor="let employee of employees">
-  <div class="line row" *ngIf="employee">
+<div class="line" *ngFor="let employee of employees; let index = index">
+  <div class="line row" *ngIf="employee" [ngClass]="{'backgroud-color': 0 === index % 2}">
     <div class="name">
       {{employee?.name}}
     </div>

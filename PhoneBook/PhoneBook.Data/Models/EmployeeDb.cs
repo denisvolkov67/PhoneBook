@@ -8,7 +8,7 @@ namespace PhoneBook.Data.Models
     {
         public long Id { get; set; }
 
-        public string Name { get; set; }
+        public string Name { get; set; }   
 
         public string Position { get; set; }
 
@@ -21,5 +21,9 @@ namespace PhoneBook.Data.Models
         public string Email { get; set; }
 
         public string DepartmentDbId { get; set; }
+
+        public string Name_Upper { get; set; }
+
+        public string Position_Upper { get; set; }
     }
 }

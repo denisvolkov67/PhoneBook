@@ -63,6 +63,47 @@ export class DepartmentsService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
+    public departmentsGetDepartmentById(id: string, observe?: 'body', reportProgress?: boolean): Observable<Department>;
+    public departmentsGetDepartmentById(id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Department>>;
+    public departmentsGetDepartmentById(id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Department>>;
+    public departmentsGetDepartmentById(id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling departmentsGetDepartmentById.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Department>('get',`${this.basePath}/department/${encodeURIComponent(String(id))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     *
+     *
+     * @param id
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
     public departmentsGetSubsidiaryDepartments(id: string, observe?: 'body', reportProgress?: boolean): Observable<Array<Department>>;
     public departmentsGetSubsidiaryDepartments(id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<Department>>>;
     public departmentsGetSubsidiaryDepartments(id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<Department>>>;

@@ -31,7 +31,7 @@ namespace PhoneBook.Logic.Handlers
         public async Task<Maybe<IEnumerable<Employee>>> Handle(GetEmployeesByName request, CancellationToken cancellationToken)
         {
             var result = await _context.Employees
-                .Where(x => x.Name.Contains(request.Name))
+                .Where(x => x.Name_Upper.Contains(request.Name.ToUpper()) || x.Position_Upper.Contains(request.Name.ToUpper()))
                 //.Where(x => x.Name.ToUpper().Contains(request.Name.ToUpper()))
                 //.Where(x => x.Name.Contains(request.Name, StringComparison.OrdinalIgnoreCase))
                 //.Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{request.Name}%"))

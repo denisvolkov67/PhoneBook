@@ -27,13 +27,15 @@ namespace PhoneBook.Logic.Handlers
         public async Task<Result<Employee>> Handle(CreateEmployeeCommand request, CancellationToken cancellationToken)
         {
             var result = _validator.Validate(request, ruleSet: "CheckExistingEmployeeValidation");
-
+            
             if (result.Errors.Count > 0)
             {
                 return Result.Failure<Employee>(result.Errors.First().ErrorMessage);
             }
 
             var employeeDb = _mapper.Map<EmployeeDb>(request);
+            employeeDb.Name_Upper = employeeDb.Name.ToUpper();
+            employeeDb.Position_Upper = employeeDb.Position.ToUpper();
 
             _context.Add(employeeDb);
             await _context.SaveChangesAsync(cancellationToken);

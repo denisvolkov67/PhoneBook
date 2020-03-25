@@ -1,6 +1,70 @@
-.department-header {
+
+.department-name {
   text-align: center;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
   font-weight: bold;
   width: 100%;
+  color: #7701AF;
+}
+.department-header {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  width: 100%;
+}
+.department-line {
+  width: 100%;
+  margin-left: 0;
+  height: 35px;
+}
+.backgroud-color {
+  background-color: #e4e4e4;
+}
+.line {
+  width: 100%;
+  margin-left: 0;
+  // height: 30px;
+}
+.name {
+  width: 20%;
+  float: left;
+  // text-align: center;
+  margin: 0 1px 1px 10px;
+  display: table;
+}
+.position {
+  width: 20%;
+  float: left;
+  text-align: center;
+  margin: 0 1px 1px 0;
+  display: table;
+}
+.telephone {
+  width: 15%;
+  float: left;
+  text-align: center;
+  margin: 0 1px 1px 0;
+  display: table;
+}
+.mobile {
+  width: 15%;
+  float: left;
+  text-align: center;
+  margin: 0 1px 1px 0;
+  display: table;
+}
+.email {
+  width: 20%;
+  height: 50px;
+  float: left;
+  text-align: center;
+  margin: 0 1px 1px 0;
+  display: table;
+}
+.office {
+  width: 8%;
+  float: left;
+  text-align: center;
+  margin: 0 1px 1px 0;
+  display: table;
 }
