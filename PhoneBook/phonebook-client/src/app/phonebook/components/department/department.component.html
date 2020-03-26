@@ -37,7 +37,7 @@
     <div class="name">
       {{employee?.name}}
     </div>
-    <div class="description">
+    <div class="position">
       {{employee?.position}}
     </div>
     <div class="telephone">
@@ -52,5 +52,11 @@
     <div class="office">
       {{employee?.office}}
     </div>
+    <div class="button">
+      <button class="btn btn-primary" (click)="editButtonClick(employee.id)">
+        Редактировать
+      </button>
+    </div>
+
   </div>
 </div>

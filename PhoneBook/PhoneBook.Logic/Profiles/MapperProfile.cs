@@ -14,10 +14,20 @@ namespace PhoneBook.Logic.Profiles
                 .ReverseMap()
                 .ForMember(dest => dest.DepartmentId, e => e.MapFrom(src => src.DepartmentDbId));
 
+            CreateMap<CreateEmployeeCommand, EmployeeDb>()
+                .ForMember(dest => dest.DepartmentDbId, e => e.MapFrom(src => src.DepartmentId))
+                .ReverseMap()
+                .ForMember(dest => dest.DepartmentId, e => e.MapFrom(src => src.DepartmentDbId));
+
+            CreateMap<UpdateEmployeeCommand, Employee>();
+
+            CreateMap<UpdateEmployeeCommand, EmployeeDb>()
+                .ForMember(dest => dest.DepartmentDbId, e => e.MapFrom(src => src.DepartmentId))
+                .ReverseMap()
+                .ForMember(dest => dest.DepartmentId, e => e.MapFrom(src => src.DepartmentDbId));
+
             CreateMap<Department, DepartmentDb>()
                 .ReverseMap();
-
-            CreateMap<CreateEmployeeCommand, EmployeeDb>();
         }
 
     }

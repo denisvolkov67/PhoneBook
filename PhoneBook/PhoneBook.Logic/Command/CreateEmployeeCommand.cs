@@ -18,6 +18,6 @@ namespace PhoneBook.Logic.Command
 
         public string Email { get; set; }
 
-        public string DepartmentDbId { get; set; }
+        public string DepartmentId { get; set; }
     }
 }

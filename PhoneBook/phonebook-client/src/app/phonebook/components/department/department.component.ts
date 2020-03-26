@@ -5,7 +5,7 @@ import { switchMap } from 'rxjs/operators';
 import { EmployeesService } from './../../api/employees.service';
 import { Employee } from './../../model/employee';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-department',
@@ -17,7 +17,8 @@ export class DepartmentComponent implements OnInit {
   departments: Department[] = [];
   department: Department;
 
-  constructor(private route: ActivatedRoute, private employeesService: EmployeesService, private departmentsService: DepartmentsService) {
+  constructor(private route: ActivatedRoute, private employeesService: EmployeesService,
+              private departmentsService: DepartmentsService, private router: Router) {
     this.route.paramMap
     .pipe(
       switchMap(m => {
@@ -62,6 +63,10 @@ export class DepartmentComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  editButtonClick(employeeId: number) {
+    this.router.navigate(['/employee/edit', employeeId]);
   }
 
 }

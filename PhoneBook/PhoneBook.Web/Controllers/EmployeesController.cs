@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using FluentValidation.AspNetCore;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using NJsonSchema.Annotations;
 using NSwag.Annotations;
@@ -27,6 +24,22 @@ namespace PhoneBook.Web.Controllers
         {
             _mediator = mediator;
             _logger = logger;
+        }
+
+        [HttpGet("employee/{id}")]
+        [SwaggerResponse(HttpStatusCode.OK, typeof(Employee), Description = "Success")]
+        [SwaggerResponse(HttpStatusCode.NotFound, typeof(void), Description = "Employee not found")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
+        public async Task<IActionResult> GetEmployeeByIdAsync(int id)
+        {
+            if (id <= 0)
+            {
+                _logger.LogError($"Incorrect value for the employee's Id was set. '{id}' <= 0.");
+                return BadRequest();
+            }
+            var employees = await _mediator.Send(new GetEmployeeById(id));
+
+            return employees.HasValue ? (IActionResult)Ok(employees.Value) : NotFound();
         }
 
         [HttpGet("employees/department/{id}")]
@@ -56,7 +69,7 @@ namespace PhoneBook.Web.Controllers
             return employees.HasValue ? (IActionResult)Ok(employees.Value) : NotFound();
         }
 
-        [HttpPost("employees")]
+        [HttpPost("employee")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Employee), Description = "Success")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
         public async Task<IActionResult> CreateEmployee([FromBody, NotNull, CustomizeValidator(RuleSet = "PreValidationEmployee")] CreateEmployeeCommand model)
@@ -70,6 +83,20 @@ namespace PhoneBook.Web.Controllers
             var result = await _mediator.Send(model);
 
             return result.IsFailure ? (IActionResult)BadRequest(result.Error) : Ok(result.Value); //FP is here           
+        }
+
+        [HttpPut("employee")]
+        [SwaggerResponse(HttpStatusCode.OK, typeof(UpdateEmployeeCommand), Description = "Success")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
+        public async Task<IActionResult> EditEmployee([FromBody, NotNull, CustomizeValidator(RuleSet = "PreValidationEmployeeUpdate")]UpdateEmployeeCommand model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+            var result = await _mediator.Send(model);
+
+            return result.IsFailure ? (IActionResult)BadRequest(result.Error) : Ok(result.Value); //FP is here
         }
     }
 }
