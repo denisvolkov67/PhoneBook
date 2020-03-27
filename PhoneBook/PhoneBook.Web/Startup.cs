@@ -71,10 +71,12 @@ namespace PhoneBook.Web
             }
 
             app.UseCors(opt =>
-                opt.AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .WithOrigins("http://phonebook.btrc.local")
+                opt.WithOrigins("http://phonebook.btrc.local")
+                    .WithOrigins("http://phonebook.btrc.local/")
                     .WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .WithMethods("GET", "POST", "PUT", "DELETE")
                     .AllowCredentials());
 
             app.UseOpenApi().UseSwaggerUi3();

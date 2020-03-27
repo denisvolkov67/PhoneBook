@@ -9,8 +9,14 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { Employee } from './employee';
 
 export interface UpdateEmployeeCommand { 
-    employee?: Employee;
+    id?: number;
+    name?: string;
+    position?: string;
+    telephone?: string;
+    mobile?: string;
+    office?: string;
+    email?: string;
+    departmentId?: string;
 }
