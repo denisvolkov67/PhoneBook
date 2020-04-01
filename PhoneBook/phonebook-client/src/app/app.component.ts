@@ -1,8 +1,8 @@
+import { AuthService } from './phonebook/api/auth.service';
 import { EmployeesService } from './phonebook/api/employees.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -12,21 +12,43 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 export class AppComponent implements OnInit {
   title = 'Phone Book';
   phoneBookGroup: FormGroup;
-  faSearch = faSearch;
+  userName: string;
 
-  constructor(private fb: FormBuilder, private employeesService: EmployeesService, private router: Router) {
+  constructor(private fb: FormBuilder, private employeesService: EmployeesService, private router: Router,
+              private authService: AuthService) {
     this.phoneBookGroup = this.fb.group({
       search: ['', [Validators.required, Validators.minLength(3)]]
     });
+    this.userName = this.authService.getValueFromIdToken('name');
+    this.authService.tokenValidState.subscribe(e => {
+      this.updateComponent();
+    });
   }
+
 
   ngOnInit() {}
 
   onSubmit(form: FormGroup) {
-    console.log(form.value.search);
     this.employeesService.employeesGetEmployeesByName(form.value.search).subscribe(r =>  {
-      console.log(r);
       this.router.navigate(['/employees', form.value.search]);
     });
+  }
+
+  updateComponent() {
+    console.log('updateComponent');
+    if (this.authService.isTokenValid()) {
+      console.log(this.userName);
+      this.userName = this.authService.getValueFromIdToken('name');
+    }
+  }
+
+  login() {
+    console.log('login');
+    console.log(this.userName);
+    this.authService.loginUser();
+  }
+
+  logout() {
+    this.authService.logoutUser();
   }
 }

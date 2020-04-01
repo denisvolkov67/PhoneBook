@@ -3,6 +3,11 @@
     <h2 class="my-icon mr-md-auto my-0 font-weight-normal">
       <a title = "Home" routerLink="/home"><img src="http://icons.iconarchive.com/icons/double-j-design/origami-colored-pencil/48/blue-home-icon.png"></a>
     </h2>
+    <div>
+      <button *ngIf="!userName" class="btn btn-outline-primary" (click)="login()" style = "font-size: 15px" title = "Login">Login</button>
+      <span *ngIf="userName" class="">{{userName}}</span>
+      <button *ngIf="userName" class="btn btn-outline-primary" (click)="logout()" style = "font-size: 15px" title = "Logout">Logout</button>
+    </div>
     <h4 class="my-title">
       Телефонный справочник Национальной государственной телерадиокомпании Республики Беларусь
     </h4>
@@ -19,6 +24,7 @@
         <button type="submit"></button>
       </form>
     </nav>
+
   </div>
 </div>
 

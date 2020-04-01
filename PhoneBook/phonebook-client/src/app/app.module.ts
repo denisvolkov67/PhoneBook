@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ApiModule } from './phonebook/api.module';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
+import { OAuthModule } from 'angular-oauth2-oidc';
 
 
 
@@ -16,10 +17,11 @@ import { LocationStrategy, HashLocationStrategy } from '@angular/common';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ApiModule.forRoot(null)
+    ApiModule.forRoot(null),
+    OAuthModule.forRoot()
   ],
   providers: [
-    { provide: LocationStrategy, useClass: HashLocationStrategy}
+    // { provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]
 })

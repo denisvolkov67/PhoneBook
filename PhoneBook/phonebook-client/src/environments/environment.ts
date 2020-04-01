@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
-  base_url: 'https://localhost:44312'
+  base_url: 'https://localhost:44312',
+  redirectUri: 'http://localhost:4200/home',
+  postLogoutRedirectUri: 'http://localhost:4200/home',
+  issuer: 'https://localhost:44359'
 };
 
 /*

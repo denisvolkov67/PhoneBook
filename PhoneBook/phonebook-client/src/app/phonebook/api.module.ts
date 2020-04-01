@@ -1,3 +1,5 @@
+import { OAuthModule } from 'angular-oauth2-oidc';
+import { AuthService } from './api/auth.service';
 import { EmployeesService } from './api/employees.service';
 import { DepartmentsService } from './api/departments.service';
 import { NotExistsComponent } from './components/not-exists/not-exists.component';
@@ -30,7 +32,8 @@ import { EmployeeInfoComponent } from './components/employee-info/employee-info.
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    RouterModule
+    RouterModule,
+    OAuthModule.forRoot()
   ],
   exports: [
     RouterModule,
@@ -38,6 +41,7 @@ import { EmployeeInfoComponent } from './components/employee-info/employee-info.
     HomeComponent
   ],
   providers: [
+    AuthService,
     DepartmentsService,
     EmployeesService
   ]

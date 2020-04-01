@@ -43,6 +43,8 @@ namespace PhoneBook.Security
                 iis.AutomaticAuthentication = false;
             });
 
+            //services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
@@ -65,15 +67,15 @@ namespace PhoneBook.Security
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
 
-            services.AddAuthentication()
-                .AddGoogle(options =>
-                {
-                    // register your IdentityServer with Google at https://console.developers.google.com
-                    // enable the Google+ API
-                    // set the redirect URI to http://localhost:5000/signin-google
-                    options.ClientId = "copy client ID from Google here";
-                    options.ClientSecret = "copy client secret from Google here";
-                });
+            services.AddAuthentication();
+                //.AddGoogle(options =>
+                //{
+                //    // register your IdentityServer with Google at https://console.developers.google.com
+                //    // enable the Google+ API
+                //    // set the redirect URI to http://localhost:5000/signin-google
+                //    options.ClientId = "copy client ID from Google here";
+                //    options.ClientSecret = "copy client secret from Google here";
+                //});
         }
 
         public void Configure(IApplicationBuilder app)

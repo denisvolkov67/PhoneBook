@@ -12,15 +12,57 @@ namespace PhoneBook.Security
         public static IEnumerable<IdentityResource> Ids =>
             new IdentityResource[]
             {
-                new IdentityResources.OpenId(),
-                new IdentityResources.Profile(),
+                new IdentityResources.OpenId
+                {
+                    DisplayName = "Your user identifier",
+                    Required = true,
+                    UserClaims =
+                    {
+                        "sub"
+                    }
+                },
+                new IdentityResources.Profile
+                {
+                    DisplayName = "User profile",
+                    Description =  "Your user profile information (first name, last name, etc.)",
+                    Emphasize = true,
+                    UserClaims =
+                    {
+                        "name",
+                        "family_name",
+                        "given_name",
+                        "middle_name",
+                        "preferred_username",
+                        "profile",
+                        "picture",
+                        "website",
+                        "gender",
+                        "birthdate",
+                        "zoneinfo",
+                        "locale",
+                        "updated_at",
+                        "email"
+                    }
+                },
             };
 
 
         public static IEnumerable<ApiResource> Apis =>
             new ApiResource[]
             {
-                new ApiResource("api1", "My API #1")
+                new ApiResource
+                {
+                    Name = "Phonebook api",
+                    DisplayName = "My API #1",
+
+                    Scopes =
+                    {
+                        new Scope()
+                        {
+                            Name = "phonebook_api"
+                        }
+                    }
+                }
             };
 
 
@@ -62,25 +104,47 @@ namespace PhoneBook.Security
                 {
                     ClientId = "spa",
                     ClientName = "SPA Client",
-                    ClientUri = "http://identityserver.io",
 
-                    AllowedGrantTypes = GrantTypes.Code,
-                    RequirePkce = true,
-                    RequireClientSecret = false,
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowedScopes = { "openid", "profile", "phonebook_api" },
+                    AlwaysIncludeUserClaimsInIdToken = true,
+                    AllowAccessTokensViaBrowser = true,
 
                     RedirectUris =
                     {
-                        "http://localhost:5002/index.html",
-                        "http://localhost:5002/callback.html",
-                        "http://localhost:5002/silent.html",
-                        "http://localhost:5002/popup.html",
+                        "http://localhost:4200/home",
+                        "http://phonebook.btrc.local/home",
                     },
 
-                    PostLogoutRedirectUris = { "http://localhost:5002/index.html" },
-                    AllowedCorsOrigins = { "http://localhost:5002" },
+                    PostLogoutRedirectUris = 
+                    {
+                        "http://localhost:4200/home",
+                         "http://phonebook.btrc.local/home",
+                    },
 
-                    AllowedScopes = { "openid", "profile", "api1" }
-                }
+                    AllowedCorsOrigins = 
+                    { 
+                        "http://localhost:4200",
+                        "http://phonebook.btrc.local"
+                    }
+                },
+
+                new Client
+                {
+                    ClientId = "swagger",
+                    ClientName = "Swagger Client",
+
+                    AllowedGrantTypes = GrantTypes.Implicit,
+                    AllowedScopes = { "phonebook_api" },
+                    AllowAccessTokensViaBrowser = true,
+
+                    RedirectUris =
+                    {
+                        "https://localhost:44312/swagger/oauth2-redirect.html",
+                    },
+
+                    AllowedCorsOrigins = { "https://localhost:44312" },
+                },
             };
     }
 }

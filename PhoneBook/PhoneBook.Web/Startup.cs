@@ -1,6 +1,8 @@
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NJsonSchema;
+using NSwag;
 using PhoneBook.Logic;
 using PhoneBook.Logic.Command;
 using PhoneBook.Logic.Profiles;
@@ -15,6 +18,7 @@ using PhoneBook.Logic.Queries;
 using PhoneBook.Logic.Validators;
 using PhoneBook.Web.Filters;
 using Serilog;
+using System.Collections.Generic;
 
 namespace PhoneBook.Web
 {
@@ -30,12 +34,33 @@ namespace PhoneBook.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie()
+                .AddJwtBearer(options =>
+                {
+                    //options.Authority = "https://localhost:44359/";
+                    options.Authority = "https://security.phonebook.btrc.local/";
+                    options.RequireHttpsMetadata = true;
+                    options.Audience = "phonebook_api";
+                });
+            services.AddAuthorization();
             services.AddMediatR(typeof(GetEmployeesByName).Assembly);
             services.AddAutoMapper(typeof(MapperProfile).Assembly);
             services.AddSwaggerDocument(cfg =>
             {
                 cfg.SchemaType = SchemaType.OpenApi3;
                 cfg.Title = "Phone Book";
+                cfg.AddSecurity("oauth", new[] { "phonebook_api" }, new OpenApiSecurityScheme()
+                {
+                    Flow = OpenApiOAuth2Flow.Implicit,
+                    Type = OpenApiSecuritySchemeType.OAuth2,
+                    //AuthorizationUrl = "https://localhost:44359/connect/authorize",
+                    AuthorizationUrl = "https://security.phonebook.btrc.local/connect/authorize",
+                    Scopes = new Dictionary<string, string>()
+                    {
+                        {"phonebook_api", "Access to phonebook api" }
+                    }
+                });
             });
             services.AddPhoneBookServices();
             services.AddMemoryCache();
@@ -64,12 +89,12 @@ namespace PhoneBook.Web
 
             app.UseCors(opt =>
                 opt.WithOrigins("http://phonebook.btrc.local")
-                    .WithOrigins("http://phonebook.btrc.local/")
                     .WithOrigins("http://localhost:4200")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
-                    .WithMethods("GET", "POST", "PUT", "DELETE")
                     .AllowCredentials());
+
+            app.UseAuthentication();
 
             app.UseOpenApi().UseSwaggerUi3();
 
