@@ -1,4 +1,4 @@
-import { environment } from './../../../environments/environment.prod';
+import { environment } from './../../../environments/environment';
 import { Router} from '@angular/router';
 import { Injectable, Output, EventEmitter } from '@angular/core';
 import { AuthConfig, OAuthService } from 'angular-oauth2-oidc';
@@ -42,7 +42,6 @@ export class AuthService {
   }
 
   isTokenValid() {
-    console.log('isTokenValid');
     const jwt = sessionStorage.getItem('id_token');
     if (jwt == null) { return false; }
     else { return true; }

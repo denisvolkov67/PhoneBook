@@ -1,3 +1,4 @@
+import { AuthService } from './../../api/auth.service';
 import { Employee } from './../../model/employee';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EmployeesService } from './../../api/employees.service';
@@ -13,8 +14,16 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class EmployeeEditComponent implements OnInit {
   employeerGroup: FormGroup;
   error: string;
+  logged: boolean;
 
-  constructor(private employeesService: EmployeesService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router) {
+  constructor(private employeesService: EmployeesService, private fb: FormBuilder, private route: ActivatedRoute,
+              private router: Router, private authService: AuthService) {
+
+    this.updateComponent();
+    this.authService.tokenValidState.subscribe(e => {
+      this.updateComponent();
+    });
+
     this.employeerGroup = this.fb.group({
       id: [0, Validators.required],
       name: ['', [Validators.required, Validators.minLength(1)]],
@@ -25,6 +34,7 @@ export class EmployeeEditComponent implements OnInit {
       email: [''],
       departmentId: ['', Validators.required]
       });
+
     }
 
   ngOnInit() {
@@ -66,6 +76,12 @@ export class EmployeeEditComponent implements OnInit {
       console.log(err);
     }
     );
+  }
+
+  updateComponent() {
+    if (this.authService.isTokenValid()) {
+      this.logged = this.authService.isTokenValid();
+    }
   }
 }
 

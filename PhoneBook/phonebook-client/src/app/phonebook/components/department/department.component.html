@@ -52,7 +52,7 @@
     <div class="office">
       {{employee?.office}}
     </div>
-    <div class="button">
+    <div class="button" *ngIf="logged">
       <button class="btn btn-primary" (click)="editButtonClick(employee.id)">
         Редактировать
       </button>

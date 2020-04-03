@@ -4,6 +4,8 @@ using System.Net;
 using System.Threading.Tasks;
 using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NJsonSchema.Annotations;
@@ -53,6 +55,7 @@ namespace PhoneBook.Web.Controllers
                 _logger.LogError($"Incorrect value for the employee's DepartmentId was set. '{id}' - is null...");
                 return BadRequest();
             }
+            
             var employees = await _mediator.Send(new GetEmployeesByDepartmentId(id));
 
             return employees.HasValue ? (IActionResult)Ok(employees.Value) : NotFound();
@@ -69,6 +72,7 @@ namespace PhoneBook.Web.Controllers
             return employees.HasValue ? (IActionResult)Ok(employees.Value) : NotFound();
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("employee")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Employee), Description = "Success")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
@@ -85,6 +89,7 @@ namespace PhoneBook.Web.Controllers
             return result.IsFailure ? (IActionResult)BadRequest(result.Error) : Ok(result.Value); //FP is here           
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("employee/update")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(UpdateEmployeeCommand), Description = "Success")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]

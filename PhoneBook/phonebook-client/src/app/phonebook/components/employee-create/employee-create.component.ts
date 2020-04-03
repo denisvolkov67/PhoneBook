@@ -1,3 +1,4 @@
+import { AuthService } from './../../api/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeesService } from './../../api/employees.service';
@@ -11,9 +12,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EmployeeCreateComponent implements OnInit {
   employeerGroup: FormGroup;
+  logged: boolean;
 
-  constructor(private employeesService: EmployeesService, private fb: FormBuilder, private route: ActivatedRoute, private router: Router) {
-    console.log('constructor');
+  constructor(private employeesService: EmployeesService, private fb: FormBuilder, private route: ActivatedRoute,
+              private router: Router, private authService: AuthService) {
+
+    this.updateComponent();
+    this.authService.tokenValidState.subscribe(e => {
+      this.updateComponent();
+    });
+
     this.employeerGroup = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(1)]],
       position: ['', [Validators.required, Validators.minLength(1)]],
@@ -38,6 +46,12 @@ export class EmployeeCreateComponent implements OnInit {
       console.log(err);
     }
     );
+  }
+
+  updateComponent() {
+    if (this.authService.isTokenValid()) {
+      this.logged = this.authService.isTokenValid();
+    }
   }
 
 }

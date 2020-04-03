@@ -35,16 +35,12 @@ export class AppComponent implements OnInit {
   }
 
   updateComponent() {
-    console.log('updateComponent');
     if (this.authService.isTokenValid()) {
-      console.log(this.userName);
       this.userName = this.authService.getValueFromIdToken('name');
     }
   }
 
   login() {
-    console.log('login');
-    console.log(this.userName);
     this.authService.loginUser();
   }
 

@@ -36,12 +36,12 @@ namespace PhoneBook.Web
         {
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie()
-                .AddJwtBearer(options =>
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
-                    //options.Authority = "https://localhost:44359/";
-                    options.Authority = "https://security.phonebook.btrc.local/";
+                    options.Authority = "https://localhost:44359/";
+                    //options.Authority = "https://security.phonebook.btrc.local/";
                     options.RequireHttpsMetadata = true;
-                    options.Audience = "phonebook_api";
+                    options.Audience = "Phonebook api";
                 });
             services.AddAuthorization();
             services.AddMediatR(typeof(GetEmployeesByName).Assembly);
@@ -54,8 +54,8 @@ namespace PhoneBook.Web
                 {
                     Flow = OpenApiOAuth2Flow.Implicit,
                     Type = OpenApiSecuritySchemeType.OAuth2,
-                    //AuthorizationUrl = "https://localhost:44359/connect/authorize",
-                    AuthorizationUrl = "https://security.phonebook.btrc.local/connect/authorize",
+                    AuthorizationUrl = "https://localhost:44359/connect/authorize",
+                    //AuthorizationUrl = "https://security.phonebook.btrc.local/connect/authorize",
                     Scopes = new Dictionary<string, string>()
                     {
                         {"phonebook_api", "Access to phonebook api" }

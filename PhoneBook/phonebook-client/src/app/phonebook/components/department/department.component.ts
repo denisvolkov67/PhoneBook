@@ -1,3 +1,4 @@
+import { AuthService } from './../../api/auth.service';
 import { Department } from './../../model/department';
 import { DepartmentsService } from './../../api/departments.service';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -16,9 +17,16 @@ export class DepartmentComponent implements OnInit {
   employees: Employee[] = [];
   departments: Department[] = [];
   department: Department;
+  logged: boolean;
 
-  constructor(private route: ActivatedRoute, private employeesService: EmployeesService,
-              private departmentsService: DepartmentsService, private router: Router) {
+  constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService,
+              private departmentsService: DepartmentsService, private employeesService: EmployeesService)   {
+
+    this.updateComponent();
+    this.authService.tokenValidState.subscribe(e => {
+      this.updateComponent();
+    });
+
     this.route.paramMap
     .pipe(
       switchMap(m => {
@@ -67,6 +75,12 @@ export class DepartmentComponent implements OnInit {
 
   editButtonClick(employeeId: number) {
     this.router.navigate(['/employee/edit', employeeId]);
+  }
+
+  updateComponent() {
+    if (this.authService.isTokenValid()) {
+      this.logged = this.authService.isTokenValid();
+    }
   }
 
 }

@@ -1,7 +1,12 @@
+
+.btn-logInOut {
+  float: right;
+  padding: 0 12px;
+}
 .search {
   width: auto;
   position: relative;
-  float: right;
+  float: left;
 }
 .search input{
   width: 250px;
@@ -28,6 +33,10 @@ form button {
 }
 .my-title {
   margin-left: 0px !important;
+  float: left !important;
+}
+.home {
+  width: 48px;
 }
 
 
