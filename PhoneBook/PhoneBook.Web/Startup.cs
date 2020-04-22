@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NJsonSchema;
 using NSwag;
+using NSwag.AspNetCore;
 using PhoneBook.Logic;
 using PhoneBook.Logic.Command;
 using PhoneBook.Logic.Profiles;
@@ -96,7 +97,11 @@ namespace PhoneBook.Web
 
             app.UseAuthentication();
 
-            app.UseOpenApi().UseSwaggerUi3();
+            app.UseOpenApi().UseSwaggerUi3(opt => opt.OAuth2Client = new OAuth2ClientSettings()
+            {
+                AppName = "Phone Book",
+                ClientId = "swagger"
+            }); ;
 
             mediator.Send(new CreateDatabaseCommand()).Wait();
 

@@ -103,5 +103,22 @@ namespace PhoneBook.Web.Controllers
 
             return result.IsFailure ? (IActionResult)BadRequest(result.Error) : Ok(result.Value); //FP is here
         }
+
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpPost("employee/delete/{id}")]
+        [SwaggerResponse(HttpStatusCode.OK, typeof(Employee), Description = "Success")]
+        [SwaggerResponse(HttpStatusCode.NotFound, typeof(void), Description = "Employee not found")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
+        public async Task<IActionResult> DeleteEmployeeByIdAsync(int id)
+        {
+            if (id <= 0)
+            {
+                _logger.LogError($"Incorrect value for the employee's Id was set. '{id}' <= 0.");
+                return BadRequest();
+            }
+            var employees = await _mediator.Send(new DeleteEmployeeByIdCommand(id));
+
+            return employees == true ? (IActionResult)Ok() : BadRequest();
+        }
     }
 }
