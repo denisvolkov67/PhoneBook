@@ -17,7 +17,7 @@ using PhoneBook.Logic.Queries;
 namespace PhoneBook.Web.Controllers
 {
     [ApiController]
-    public class EmployeesController : ControllerBase
+    public class EmployeesController : Controller
     {
         private readonly IMediator _mediator;
         private readonly ILogger<EmployeesController> _logger;
@@ -72,8 +72,8 @@ namespace PhoneBook.Web.Controllers
             return employees.HasValue ? (IActionResult)Ok(employees.Value) : NotFound();
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("employee")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Phonebook_Edit")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Employee), Description = "Success")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
         public async Task<IActionResult> CreateEmployee([FromBody, NotNull, CustomizeValidator(RuleSet = "PreValidationEmployee")] CreateEmployeeCommand model)
@@ -89,12 +89,14 @@ namespace PhoneBook.Web.Controllers
             return result.IsFailure ? (IActionResult)BadRequest(result.Error) : Ok(result.Value); //FP is here           
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("employee/update")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Phonebook_Edit")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(UpdateEmployeeCommand), Description = "Success")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
         public async Task<IActionResult> EditEmployee([FromBody, NotNull, CustomizeValidator(RuleSet = "PreValidationEmployeeUpdate")]UpdateEmployeeCommand model)
         {
+            var claims = User.Claims;
+            var sub = User.FindFirst("sub")?.Value;
             if (!ModelState.IsValid)
             {
                 return BadRequest();
@@ -104,8 +106,8 @@ namespace PhoneBook.Web.Controllers
             return result.IsFailure ? (IActionResult)BadRequest(result.Error) : Ok(result.Value); //FP is here
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost("employee/delete/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Phonebook_Edit")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Employee), Description = "Success")]
         [SwaggerResponse(HttpStatusCode.NotFound, typeof(void), Description = "Employee not found")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]

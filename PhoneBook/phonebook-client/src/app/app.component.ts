@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
     this.phoneBookGroup = this.fb.group({
       search: ['', [Validators.required, Validators.minLength(3)]]
     });
-    this.userName = this.authService.getValueFromIdToken('name');
+    this.userName = this.authService.getValueFromIdToken('displayName');
     this.authService.tokenValidState.subscribe(e => {
       this.updateComponent();
     });
@@ -36,7 +36,7 @@ export class AppComponent implements OnInit {
 
   updateComponent() {
     if (this.authService.isTokenValid()) {
-      this.userName = this.authService.getValueFromIdToken('name');
+      this.userName = this.authService.getValueFromIdToken('displayName');
     }
   }
 

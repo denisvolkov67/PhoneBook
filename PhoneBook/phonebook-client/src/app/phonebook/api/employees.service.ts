@@ -279,11 +279,9 @@ export class EmployeesService {
         let headers = this.defaultHeaders;
 
         // authentication (oauth) required
+        this.configuration.accessToken = this.getAccessToken();
         if (this.configuration.accessToken) {
-            const accessToken = typeof this.configuration.accessToken === 'function'
-                ? this.configuration.accessToken()
-                : this.configuration.accessToken;
-            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+            headers = headers.set('Authorization', 'Bearer ' + this.configuration.accessToken);
         }
 
         // to determine the Accept header
@@ -328,11 +326,9 @@ export class EmployeesService {
         let headers = this.defaultHeaders;
 
         // authentication (oauth) required
+        this.configuration.accessToken = this.getAccessToken();
         if (this.configuration.accessToken) {
-            const accessToken = typeof this.configuration.accessToken === 'function'
-                ? this.configuration.accessToken()
-                : this.configuration.accessToken;
-            headers = headers.set('Authorization', 'Bearer ' + accessToken);
+            headers = headers.set('Authorization', 'Bearer ' + this.configuration.accessToken);
         }
 
         // to determine the Accept header

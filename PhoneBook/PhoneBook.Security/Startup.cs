@@ -11,9 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using IdentityServer4.Services;
-using IdentityServer.LdapExtension.Extensions;
-using IdentityServer.LdapExtension.UserModel;
+using PhoneBook.Security.Quickstart.Account;
 
 namespace PhoneBook.Security
 {
@@ -46,7 +44,7 @@ namespace PhoneBook.Security
                 iis.AutomaticAuthentication = false;
             });
 
-            //services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
+            services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_3_0);
 
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
@@ -54,8 +52,6 @@ namespace PhoneBook.Security
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
-
-
 
             var builder = services.AddIdentityServer(options =>
                 {
@@ -67,13 +63,14 @@ namespace PhoneBook.Security
                 .AddInMemoryIdentityResources(Config.Ids)
                 .AddInMemoryApiResources(Config.Apis)
                 .AddInMemoryClients(Config.Clients)
-                //.AddLdapUsers<ActiveDirectoryAppUser>(Configuration.GetSection("LdapServer"), UserStore.InMemory);
-                .AddAspNetIdentity<ApplicationUser>();
+                .AddAspNetIdentity<ApplicationUser>()
+                .AddProfileService<ProfileService>();
 
             // not recommended for production - you need to store your key material somewhere secure
             builder.AddDeveloperSigningCredential();
 
-            services.AddAuthentication();
+            services.AddAuthentication()
+                .AddCookie();
         }
 
         public void Configure(IApplicationBuilder app)

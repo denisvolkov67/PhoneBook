@@ -1,10 +1,12 @@
 using AutoMapper;
 using FluentValidation.AspNetCore;
+using IdentityServer4.AccessTokenValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -39,26 +41,35 @@ namespace PhoneBook.Web
                 .AddCookie()
                 .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
                 {
-                    options.Authority = "https://localhost:44359/";
-                    //options.Authority = "https://security.phonebook.btrc.local/";
+                    //options.Authority = "https://localhost:44359/";
+                    options.Authority = "https://security.phonebook.btrc.local/";
                     options.RequireHttpsMetadata = true;
                     options.Audience = "Phonebook api";
                 });
+                //.AddIdentityServerAuthentication(JwtBearerDefaults.AuthenticationScheme, opt =>
+                //{
+                //    //opt.Authority = "https://localhost:44359/";
+                //    opt.Authority = "https://security.phonebook.btrc.local/";
+                //    opt.RequireHttpsMetadata = true;
+                //    //opt.ApiName = "phonebook_api";
+                //});
             services.AddAuthorization();
+
             services.AddMediatR(typeof(GetEmployeesByName).Assembly);
             services.AddAutoMapper(typeof(MapperProfile).Assembly);
             services.AddSwaggerDocument(cfg =>
             {
                 cfg.SchemaType = SchemaType.OpenApi3;
                 cfg.Title = "Phone Book";
-                cfg.AddSecurity("oauth", new[] { "phonebook_api" }, new OpenApiSecurityScheme()
+                cfg.AddSecurity("oauth", new[] {"openid", "phonebook_api" }, new OpenApiSecurityScheme()
                 {
                     Flow = OpenApiOAuth2Flow.Implicit,
                     Type = OpenApiSecuritySchemeType.OAuth2,
-                    AuthorizationUrl = "https://localhost:44359/connect/authorize",
-                    //AuthorizationUrl = "https://security.phonebook.btrc.local/connect/authorize",
+                    //AuthorizationUrl = "https://localhost:44359/connect/authorize",
+                    AuthorizationUrl = "https://security.phonebook.btrc.local/connect/authorize",
                     Scopes = new Dictionary<string, string>()
                     {
+                        {"openid", "Access to profile" },
                         {"phonebook_api", "Access to phonebook api" }
                     }
                 });

@@ -11,7 +11,7 @@
       <div>
         <button *ngIf="!userName" class="btn btn-outline-primary btn-logInOut" (click)="login()" title = "Login">Login</button>
         <span *ngIf="userName" class="">{{userName}}</span>
-        <button *ngIf="userName" class="btn btn-outline-primary btn-logInOut" (click)="logout()" title = "Logout">Logout</button>
+        <button *ngIf="userName"  class="btn btn-outline-primary btn-logInOut" (click)="logout()" title = "Logout">Logout</button>
       </div>
       <form class="search" [formGroup]="phoneBookGroup" (ngSubmit)="onSubmit(form)" #form="ngForm" >
         <input

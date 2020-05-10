@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
 
 namespace IdentityServer4.Quickstart.UI
 {
@@ -89,7 +91,7 @@ namespace IdentityServer4.Quickstart.UI
         public async Task<IActionResult> Callback()
         {
             // read external identity from the temporary cookie
-            var result = await HttpContext.AuthenticateAsync(IdentityServer4.IdentityServerConstants.ExternalCookieAuthenticationScheme);
+            var result = await HttpContext.AuthenticateAsync(IdentityServerConstants.ExternalCookieAuthenticationScheme);
             if (result?.Succeeded != true)
             {
                 throw new Exception("External authentication error");
@@ -125,6 +127,7 @@ namespace IdentityServer4.Quickstart.UI
             // it doesn't expose an API to issue additional claims from the login workflow
             var principal = await _signInManager.CreateUserPrincipalAsync(user);
             additionalLocalClaims.AddRange(principal.Claims);
+            //additionalLocalClaims.AddRange(claims);
             var name = principal.FindFirst(JwtClaimTypes.Name)?.Value ?? user.Id;
             
             var isuser = new IdentityServerUser(user.Id)
@@ -137,7 +140,7 @@ namespace IdentityServer4.Quickstart.UI
             await HttpContext.SignInAsync(isuser, localSignInProps);
 
             // delete temporary cookie used during external authentication
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
+            await HttpContext.SignOutAsync(IdentityServer4.IdentityServerConstants.ExternalCookieAuthenticationScheme);
 
             // retrieve return URL
             var returnUrl = result.Properties.Items["returnUrl"] ?? "~/";
@@ -181,14 +184,17 @@ namespace IdentityServer4.Quickstart.UI
                 var id = new ClaimsIdentity(AccountOptions.WindowsAuthenticationSchemeName);
                 id.AddClaim(new Claim(JwtClaimTypes.Subject, wp.FindFirst(ClaimTypes.PrimarySid).Value));
                 id.AddClaim(new Claim(JwtClaimTypes.Name, wp.Identity.Name));
-
+                
                 // add the groups as claims -- be careful if the number of groups is too large
-                if (!AccountOptions.IncludeWindowsGroups)
+                if (AccountOptions.IncludeWindowsGroups)
                 {
                     var wi = wp.Identity as WindowsIdentity;
-                    var groups = wi.Groups.Translate(typeof(NTAccount));
-                    var roles = groups.Select(x => new Claim(JwtClaimTypes.Role, x.Value));
+                    var groups = getUserGroups(wp.Identity.Name);
+                    var roles = groups
+                        .Where(x => x.SamAccountName.Contains("Phonebook"))
+                        .Select(x => new Claim(JwtClaimTypes.Role, x.SamAccountName));
                     id.AddClaims(roles);
+                    var group = getUserGroups(wp.Identity.Name);
                 }
 
                 await HttpContext.SignInAsync(
@@ -228,6 +234,18 @@ namespace IdentityServer4.Quickstart.UI
             // find external user
             var user = await _userManager.FindByLoginAsync(provider, providerUserId);
 
+            if (user != null)
+            {
+                var role = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Role)?.Value ??
+                    claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+                if (user.Role != role)
+                {
+                    user.Role = role;
+                    var identityResult = await _userManager.UpdateAsync(user);
+                    if (!identityResult.Succeeded) throw new Exception(identityResult.Errors.First().Description);
+                }
+            }
+
             return (user, provider, providerUserId, claims);
         }
 
@@ -266,14 +284,29 @@ namespace IdentityServer4.Quickstart.UI
             // email
             var email = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Email)?.Value ??
                claims.FirstOrDefault(x => x.Type == ClaimTypes.Email)?.Value;
+            var role = claims.FirstOrDefault(x => x.Type == JwtClaimTypes.Role)?.Value ??
+                claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+
+            var displayName = getUserNameFull(name);
+
             if (email != null)
             {
                 filtered.Add(new Claim(JwtClaimTypes.Email, email));
+            }
+            else
+            {
+                filtered.Add(new Claim("Role", role));
+                filtered.Add(new Claim("DisplayName", displayName));
+                filtered.Add(new Claim("Login", name));
+
             }
 
             var user = new ApplicationUser
             {
                 UserName = Guid.NewGuid().ToString(),
+                Role = role,
+                DisplayName = displayName,
+                Login = name
             };
             var identityResult = await _userManager.CreateAsync(user);
             if (!identityResult.Succeeded) throw new Exception(identityResult.Errors.First().Description);
@@ -316,5 +349,42 @@ namespace IdentityServer4.Quickstart.UI
         //private void ProcessLoginCallbackForSaml2p(AuthenticateResult externalResult, List<Claim> localClaims, AuthenticationProperties localSignInProps)
         //{
         //}
+
+        private string getUserNameFull(string uLogin)
+        {
+            uLogin = uLogin.Substring(5);
+            string filter = string.Format("(&(ObjectClass={0})(sAMAccountName={1}))", "person", uLogin);
+            string domain = "BTRC";
+            string[] properties = new string[] { "fullname" };
+
+            DirectoryEntry adRoot = new DirectoryEntry("LDAP://" + domain, null, null, AuthenticationTypes.Secure);
+            DirectorySearcher searcher = new DirectorySearcher(adRoot);
+            searcher.SearchScope = SearchScope.Subtree;
+            searcher.ReferralChasing = ReferralChasingOption.All;
+            searcher.PropertiesToLoad.AddRange(properties);
+            searcher.Filter = filter;
+
+            SearchResult result = searcher.FindOne();
+            DirectoryEntry directoryEntry = result.GetDirectoryEntry();
+
+            if (directoryEntry.Properties["displayName"].Count > 0)
+            {
+                return directoryEntry.Properties["displayName"][0].ToString();
+            }
+            else
+            {
+                return String.Empty;
+            }
+        }
+
+        private PrincipalSearchResult<System.DirectoryServices.AccountManagement.Principal> getUserGroups(string uLogin)
+        {
+            uLogin = uLogin.Substring(5);
+
+            UserPrincipal user = UserPrincipal.FindByIdentity(new PrincipalContext(ContextType.Domain, "btrc.local"), 
+                IdentityType.SamAccountName, uLogin);
+            return user.GetGroups();
+        }
+
     }
 }
