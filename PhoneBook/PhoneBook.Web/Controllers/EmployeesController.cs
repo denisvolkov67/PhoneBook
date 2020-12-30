@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -6,6 +6,7 @@ using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using NJsonSchema.Annotations;
@@ -91,6 +92,7 @@ namespace PhoneBook.Web.Controllers
 
         [HttpPost("employee/update")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Phonebook_Edit")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [SwaggerResponse(HttpStatusCode.OK, typeof(UpdateEmployeeCommand), Description = "Success")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
         public async Task<IActionResult> EditEmployee([FromBody, NotNull, CustomizeValidator(RuleSet = "PreValidationEmployeeUpdate")]UpdateEmployeeCommand model)

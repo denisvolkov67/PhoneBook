@@ -17,7 +17,7 @@ namespace PhoneBook.Security
             {
                 new IdentityResources.OpenId
                 {
-                    DisplayName = "Your user identifier",
+                    DisplayName = "Ваш идентификатор пользователя",
                     Required = true,
                     UserClaims =
                     {
@@ -26,8 +26,8 @@ namespace PhoneBook.Security
                 },
                 new IdentityResources.Profile
                 {
-                    DisplayName = "User profile",
-                    Description =  "Your user profile information (first name, last name, etc.)",
+                    DisplayName = "Профиль пользователя",
+                    Description =  "Информация о вашем профиле пользователя (имя, фамилия и т. д.)",
                     Emphasize = true,
                     UserClaims =
                     {
@@ -45,14 +45,14 @@ namespace PhoneBook.Security
                     new ApiResource()
                     {
                         Name = "Phonebook api",
-                        DisplayName = "My API #1",
+                        DisplayName = "Phonebook api",
 
                         Scopes =
                         {
                             new Scope()
                             {
                                 Name = "phonebook_api",
-                                DisplayName = "Access to phonebook api"
+                                DisplayName = "Доступ к телефонному справочнику"
                             }
                         }
                     }
@@ -97,7 +97,7 @@ namespace PhoneBook.Security
                     PostLogoutRedirectUris = 
                     {
                         "http://localhost:4200/home",
-                         "http://phonebook.btrc.local/home",
+                        "http://phonebook.btrc.local/home",
                     },
 
                     AllowedCorsOrigins = 

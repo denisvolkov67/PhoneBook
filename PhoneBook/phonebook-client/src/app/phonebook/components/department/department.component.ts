@@ -79,7 +79,7 @@ export class DepartmentComponent implements OnInit {
 
   updateComponent() {
     if (this.authService.isTokenValid()) {
-      this.logged = this.authService.getValueFromIdToken('role')
+      this.logged = this.authService.getValueFromIdToken('role');
     }
   }
 

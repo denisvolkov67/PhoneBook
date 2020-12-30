@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using PhoneBook.Security.Quickstart.Account;
+using Microsoft.IdentityModel.Logging;
 
 namespace PhoneBook.Security
 {
@@ -28,6 +29,8 @@ namespace PhoneBook.Security
 
         public void ConfigureServices(IServiceCollection services)
         {
+            IdentityModelEventSource.ShowPII = true;
+
             services.AddControllersWithViews();
 
             // configures IIS out-of-proc settings (see https://github.com/aspnet/AspNetCore/issues/14882)

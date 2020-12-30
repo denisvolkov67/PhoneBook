@@ -133,7 +133,7 @@ namespace IdentityServer4.Quickstart.UI
             var isuser = new IdentityServerUser(user.Id)
             {
                 DisplayName = name,
-                IdentityProvider = provider,
+                IdentityProvider = provider,  
                 AdditionalClaims = additionalLocalClaims
             };
 
@@ -295,10 +295,12 @@ namespace IdentityServer4.Quickstart.UI
             }
             else
             {
-                filtered.Add(new Claim("Role", role));
                 filtered.Add(new Claim("DisplayName", displayName));
                 filtered.Add(new Claim("Login", name));
-
+                if (role != null)
+                {
+                    filtered.Add(new Claim("Role", role));
+                }
             }
 
             var user = new ApplicationUser
