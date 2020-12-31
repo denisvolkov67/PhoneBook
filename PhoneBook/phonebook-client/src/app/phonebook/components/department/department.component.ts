@@ -23,10 +23,6 @@ export class DepartmentComponent implements OnInit {
               private departmentsService: DepartmentsService, private employeesService: EmployeesService)   {
 
     this.updateComponent();
-    this.authService.tokenValidState.subscribe(e => {
-      this.updateComponent();
-    });
-
     this.route.paramMap
     .pipe(
       switchMap(m => {
@@ -78,9 +74,15 @@ export class DepartmentComponent implements OnInit {
   }
 
   updateComponent() {
-    if (this.authService.isTokenValid()) {
-      this.logged = this.authService.getValueFromIdToken('role');
+    this.authService.getRole()
+    .subscribe(result => {
+      this.logged = JSON.parse(result);
+    },
+    (err: HttpErrorResponse) => {
+      return console.log(err.error);
     }
+    );
   }
 
 }
+

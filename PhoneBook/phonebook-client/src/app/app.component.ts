@@ -19,9 +19,9 @@ export class AppComponent implements OnInit {
     this.phoneBookGroup = this.fb.group({
       search: ['', [Validators.required, Validators.minLength(3)]]
     });
-    this.userName = this.authService.getValueFromIdToken('displayName');
-    this.authService.tokenValidState.subscribe(e => {
-      this.updateComponent();
+
+    authService.getName().subscribe(account => {
+      this.userName = account;
     });
   }
 
@@ -32,19 +32,5 @@ export class AppComponent implements OnInit {
     this.employeesService.employeesGetEmployeesByName(form.value.search).subscribe(r =>  {
       this.router.navigate(['/employees', form.value.search]);
     });
-  }
-
-  updateComponent() {
-    if (this.authService.isTokenValid()) {
-      this.userName = this.authService.getValueFromIdToken('displayName');
-    }
-  }
-
-  login() {
-    this.authService.loginUser();
-  }
-
-  logout() {
-    this.authService.logoutUser();
   }
 }

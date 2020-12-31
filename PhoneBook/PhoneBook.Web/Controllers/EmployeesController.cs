@@ -74,7 +74,7 @@ namespace PhoneBook.Web.Controllers
         }
 
         [HttpPost("employee")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Phonebook_Edit")]
+        [Authorize(Roles = "Phonebook_Edit")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Employee), Description = "Success")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
         public async Task<IActionResult> CreateEmployee([FromBody, NotNull, CustomizeValidator(RuleSet = "PreValidationEmployee")] CreateEmployeeCommand model)
@@ -91,14 +91,11 @@ namespace PhoneBook.Web.Controllers
         }
 
         [HttpPost("employee/update")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Phonebook_Edit")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Roles = "Phonebook_Edit")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(UpdateEmployeeCommand), Description = "Success")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
         public async Task<IActionResult> EditEmployee([FromBody, NotNull, CustomizeValidator(RuleSet = "PreValidationEmployeeUpdate")]UpdateEmployeeCommand model)
         {
-            var claims = User.Claims;
-            var sub = User.FindFirst("sub")?.Value;
             if (!ModelState.IsValid)
             {
                 return BadRequest();
@@ -109,7 +106,7 @@ namespace PhoneBook.Web.Controllers
         }
 
         [HttpPost("employee/delete/{id}")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Phonebook_Edit")]
+        [Authorize(Roles = "Phonebook_Edit")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(Employee), Description = "Success")]
         [SwaggerResponse(HttpStatusCode.NotFound, typeof(void), Description = "Employee not found")]
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]

@@ -20,10 +20,6 @@ export class EmployeeEditComponent implements OnInit {
               private router: Router, private authService: AuthService) {
 
     this.updateComponent();
-    this.authService.tokenValidState.subscribe(e => {
-      this.updateComponent();
-    });
-
     this.employeerGroup = this.fb.group({
       id: [0, Validators.required],
       name: ['', [Validators.required, Validators.minLength(1)]],
@@ -79,9 +75,14 @@ export class EmployeeEditComponent implements OnInit {
   }
 
   updateComponent() {
-    if (this.authService.isTokenValid()) {
-      this.logged = this.authService.isTokenValid();
+    this.authService.getRole()
+    .subscribe(result => {
+      this.logged = JSON.parse(result);
+    },
+    (err: HttpErrorResponse) => {
+      return console.log(err.error);
     }
+    );
   }
 }
 

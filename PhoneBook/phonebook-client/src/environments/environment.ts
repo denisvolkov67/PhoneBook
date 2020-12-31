@@ -7,7 +7,9 @@ export const environment = {
   base_url: 'http://localhost:12556',
   redirectUri: 'http://localhost:4200/home',
   postLogoutRedirectUri: 'http://localhost:4200/home',
-  issuer: 'https://localhost:44359'
+  issuer: 'https://localhost:44359',
+  apiUserName: 'http://localhost:12556/account/name',
+  apiUserRole: 'http://localhost:12556/account/role'
 };
 
 /*

@@ -1,3 +1,4 @@
+import { WinAuthInterceptor } from './phonebook/class/WinAuthInterceptor';
 
 import { Routes, RouterModule } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
@@ -7,6 +8,7 @@ import { AppComponent } from './app.component';
 import { ApiModule } from './phonebook/api.module';
 import { LocationStrategy, HashLocationStrategy } from '@angular/common';
 import { OAuthModule } from 'angular-oauth2-oidc';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
 
@@ -21,6 +23,11 @@ import { OAuthModule } from 'angular-oauth2-oidc';
     OAuthModule.forRoot()
   ],
   providers: [
+    {
+        provide: HTTP_INTERCEPTORS,
+        useClass: WinAuthInterceptor,
+        multi: true
+    }
     // { provide: LocationStrategy, useClass: HashLocationStrategy}
   ],
   bootstrap: [AppComponent]

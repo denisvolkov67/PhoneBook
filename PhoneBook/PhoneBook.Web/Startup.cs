@@ -3,9 +3,12 @@ using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -20,7 +23,6 @@ using PhoneBook.Logic.Queries;
 using PhoneBook.Logic.Validators;
 using PhoneBook.Web.Filters;
 using Serilog;
-using System.Collections.Generic;
 using System.Net;
 
 namespace PhoneBook.Web
@@ -42,24 +44,10 @@ namespace PhoneBook.Web
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
                 | SecurityProtocolType.Tls11
                 | SecurityProtocolType.Tls12;
-               // | SecurityProtocolType.Tls13;
+            // | SecurityProtocolType.Tls13;
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie()
-            //.AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
-            //{
-            //    //options.Authority = "https://localhost:44359/";
-            //    options.Authority = "https://security.phonebook.btrc.local/";
-            //    options.RequireHttpsMetadata = true;
-            //    options.Audience = "Phonebook api";
-            //});
-            .AddIdentityServerAuthentication(JwtBearerDefaults.AuthenticationScheme, opt =>
-            {
-                //opt.Authority = "https://localhost:44359/";
-                opt.Authority = "http://security.phonebook.btrc.local/";
-                opt.RequireHttpsMetadata = false;
-                opt.ApiName = "Phonebook api";
-            });
+            services.AddAuthentication(IISDefaults.AuthenticationScheme);
+
             services.AddAuthorization();
 
             services.AddAntiforgery(options => {
@@ -72,18 +60,6 @@ namespace PhoneBook.Web
             {
                 cfg.SchemaType = SchemaType.OpenApi3;
                 cfg.Title = "Phone Book";
-                cfg.AddSecurity("oauth", new[] {"openid", "phonebook_api" }, new OpenApiSecurityScheme()
-                {
-                    Flow = OpenApiOAuth2Flow.Implicit,
-                    Type = OpenApiSecuritySchemeType.OAuth2,
-                    //AuthorizationUrl = "https://localhost:44359/connect/authorize",
-                    AuthorizationUrl = "http://security.phonebook.btrc.local/connect/authorize",
-                    Scopes = new Dictionary<string, string>()
-                    {
-                        {"openid", "Access to profile" },
-                        {"phonebook_api", "Access to phonebook api" }
-                    }
-                });
             });
             services.AddPhoneBookServices();
             services.AddMemoryCache();
@@ -93,6 +69,12 @@ namespace PhoneBook.Web
             {
                 opt.Filters.Clear();
                 opt.Filters.Add(typeof(GlobalExceptionFilter));
+
+                var policy = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser()
+                    .Build();
+
+                opt.Filters.Add(new AuthorizeFilter(policy));
 
             }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0)
                 .AddFluentValidation(cfg =>
@@ -113,6 +95,7 @@ namespace PhoneBook.Web
             app.UseCors(
                 opt =>
                 opt
+                    .WithOrigins("http://localhost:4200")
                     .WithOrigins("http://phonebook.btrc.local")
                     .WithOrigins("http://security.phonebook.btrc.local")
                     .AllowAnyHeader()
@@ -129,8 +112,6 @@ namespace PhoneBook.Web
             });
 
             mediator.Send(new CreateDatabaseCommand()).Wait();
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 
