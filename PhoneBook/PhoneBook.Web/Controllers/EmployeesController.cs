@@ -121,5 +121,22 @@ namespace PhoneBook.Web.Controllers
 
             return employees == true ? (IActionResult)Ok() : BadRequest();
         }
+
+        [HttpPost("employee/import")]
+        [Authorize(Roles = "Phonebook_Edit")]
+        [SwaggerResponse(HttpStatusCode.OK, typeof(Employee), Description = "Success")]
+        [SwaggerResponse(HttpStatusCode.NotFound, typeof(void), Description = "Employee not found")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
+        public async Task<IActionResult> ImportEmployeeByFileAsync()
+        {
+            var request = new ImportEmployeeByFileCommand { 
+                EmployeeDelete = Request.Form.Files["DeleteUpload"],
+                EmployeeNew = Request.Form.Files["NewUpload"]
+                };
+
+            var employees = await _mediator.Send(request);
+
+            return employees.HasValue ? (IActionResult)Ok(employees.Value) : NotFound();
+        }
     }
 }

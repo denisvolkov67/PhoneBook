@@ -1,3 +1,13 @@
+.file {
+  margin: 15px 0px;
+}
+.button-import {
+  padding-left: 30%;
+  text-align: center;
+}
+.button-import button{
+  min-width: 25%;
+}
 .line {
   width: 100%;
   margin-left: 0;
@@ -9,41 +19,20 @@
   background-color: #e4e4e4;
 }
 .name {
-  width: 20%;
+  width: 30%;
   float: left;
   margin: 0 1px 1px 10px;
   display: table;
 }
 .position {
-  width: 20%;
+  width: 30%;
   float: left;
   text-align: center;
   margin: 0 1px 1px 0;
   display: table;
 }
 .telephone {
-  width: 15%;
-  float: left;
-  text-align: center;
-  margin: 0 1px 1px 0;
-  display: table;
-}
-.mobile {
-  width: 15%;
-  float: left;
-  text-align: center;
-  margin: 0 1px 1px 0;
-  display: table;
-}
-.email {
-  width: 20%;
-  float: left;
-  text-align: center;
-  margin: 0 1px 1px 0;
-  display: table;
-}
-.office {
-  width: 8%;
+  width: 22%;
   float: left;
   text-align: center;
   margin: 0 1px 1px 0;

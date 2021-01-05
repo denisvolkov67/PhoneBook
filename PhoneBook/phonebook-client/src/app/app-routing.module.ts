@@ -1,3 +1,4 @@
+import { EmployeeImportComponent } from './phonebook/components/employee-import/employee-import.component';
 import { EmployeeInfoComponent } from './phonebook/components/employee-info/employee-info.component';
 import { EmployeeCreateComponent } from './phonebook/components/employee-create/employee-create.component';
 import { EmployeeEditComponent } from './phonebook/components/employee-edit/employee-edit.component';
@@ -15,6 +16,7 @@ const routes: Routes = [
   {path: 'employee/:id', component: EmployeeInfoComponent},
   {path: 'employee-create', component: EmployeeCreateComponent},
   {path: 'employee/edit/:id', component: EmployeeEditComponent},
+  {path: 'employee-import', component: EmployeeImportComponent},
   {path: 'employees/:name', component: SearchComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', component: NotExistsComponent }

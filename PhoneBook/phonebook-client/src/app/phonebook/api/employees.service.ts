@@ -357,4 +357,13 @@ export class EmployeesService {
     getAccessToken() {
         return sessionStorage.getItem('access_token');
     }
+
+    importFile(data: FormData): Observable<Array<Employee>>{
+      let headers = new HttpHeaders();
+      headers.append('Content-Type', 'application/json');
+      const httpOptions = {
+          headers: headers
+      };
+      return this.httpClient.post<Array<Employee>> (environment.base_url + '/employee/import/', data, httpOptions);
+  }
 }

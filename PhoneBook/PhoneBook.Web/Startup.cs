@@ -1,8 +1,6 @@
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using MediatR;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,9 +10,7 @@ using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Logging;
 using NJsonSchema;
-using NSwag;
 using NSwag.AspNetCore;
 using PhoneBook.Logic;
 using PhoneBook.Logic.Command;
@@ -23,7 +19,6 @@ using PhoneBook.Logic.Queries;
 using PhoneBook.Logic.Validators;
 using PhoneBook.Web.Filters;
 using Serilog;
-using System.Net;
 
 namespace PhoneBook.Web
 {
@@ -39,20 +34,8 @@ namespace PhoneBook.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            IdentityModelEventSource.ShowPII = true;
-            ServicePointManager.Expect100Continue = true;
-            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
-                | SecurityProtocolType.Tls11
-                | SecurityProtocolType.Tls12;
-            // | SecurityProtocolType.Tls13;
-
             services.AddAuthentication(IISDefaults.AuthenticationScheme);
-
             services.AddAuthorization();
-
-            services.AddAntiforgery(options => {
-                options.Cookie.Expiration = System.TimeSpan.Zero;
-            });
 
             services.AddMediatR(typeof(GetEmployeesByName).Assembly);
             services.AddAutoMapper(typeof(MapperProfile).Assembly);
@@ -97,7 +80,6 @@ namespace PhoneBook.Web
                 opt
                     .WithOrigins("http://localhost:4200")
                     .WithOrigins("http://phonebook.btrc.local")
-                    .WithOrigins("http://security.phonebook.btrc.local")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials()

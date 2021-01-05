@@ -1,3 +1,4 @@
+import { EmployeeImportComponent } from './components/employee-import/employee-import.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { AuthService } from './api/auth.service';
 import { EmployeesService } from './api/employees.service';
@@ -24,7 +25,8 @@ import { EmployeeInfoComponent } from './components/employee-info/employee-info.
     NotExistsComponent,
     EmployeeEditComponent,
     EmployeeCreateComponent,
-    EmployeeInfoComponent
+    EmployeeInfoComponent,
+    EmployeeImportComponent
   ],
   imports:
   [

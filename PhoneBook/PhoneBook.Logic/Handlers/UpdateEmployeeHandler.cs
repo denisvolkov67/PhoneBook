@@ -7,10 +7,7 @@ using PhoneBook.Data.Context;
 using PhoneBook.Data.Models;
 using PhoneBook.Logic.Command;
 using PhoneBook.Logic.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -39,8 +36,6 @@ namespace PhoneBook.Logic.Handlers
             }
 
             var employeeDb = _mapper.Map<EmployeeDb>(request);
-            employeeDb.Name_Upper = employeeDb.Name.ToUpper();
-            employeeDb.Position_Upper = employeeDb.Position.ToUpper();
 
             _context.Entry(employeeDb).State = EntityState.Modified;
             await _context.SaveChangesAsync(cancellationToken);

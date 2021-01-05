@@ -11,11 +11,15 @@ namespace PhoneBook.Logic.Profiles
         {
             CreateMap<Employee, EmployeeDb>()
                 .ForMember(dest => dest.DepartmentDbId, e => e.MapFrom(src => src.DepartmentId))
+                .ForMember(dest => dest.Name_Upper, e => e.MapFrom(src => src.Name.ToUpper()))
+                .ForMember(dest => dest.Position_Upper, e => e.MapFrom(src => src.Position.ToUpper()))
                 .ReverseMap()
                 .ForMember(dest => dest.DepartmentId, e => e.MapFrom(src => src.DepartmentDbId));
 
             CreateMap<CreateEmployeeCommand, EmployeeDb>()
                 .ForMember(dest => dest.DepartmentDbId, e => e.MapFrom(src => src.DepartmentId))
+                .ForMember(dest => dest.Name_Upper, e => e.MapFrom(src => src.Name.ToUpper()))
+                .ForMember(dest => dest.Position_Upper, e => e.MapFrom(src => src.Position.ToUpper()))
                 .ReverseMap()
                 .ForMember(dest => dest.DepartmentId, e => e.MapFrom(src => src.DepartmentDbId));
 
@@ -23,6 +27,8 @@ namespace PhoneBook.Logic.Profiles
 
             CreateMap<UpdateEmployeeCommand, EmployeeDb>()
                 .ForMember(dest => dest.DepartmentDbId, e => e.MapFrom(src => src.DepartmentId))
+                .ForMember(dest => dest.Name_Upper, e => e.MapFrom(src => src.Name.ToUpper()))
+                .ForMember(dest => dest.Position_Upper, e => e.MapFrom(src => src.Position.ToUpper()))
                 .ReverseMap()
                 .ForMember(dest => dest.DepartmentId, e => e.MapFrom(src => src.DepartmentDbId));
 

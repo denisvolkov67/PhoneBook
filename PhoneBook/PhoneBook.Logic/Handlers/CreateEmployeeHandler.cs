@@ -34,9 +34,6 @@ namespace PhoneBook.Logic.Handlers
             }
 
             var employeeDb = _mapper.Map<EmployeeDb>(request);
-            employeeDb.Name_Upper = employeeDb.Name.ToUpper();
-            employeeDb.Position_Upper = employeeDb.Position.ToUpper();
-
             _context.Add(employeeDb);
             await _context.SaveChangesAsync(cancellationToken);
 
