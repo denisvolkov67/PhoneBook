@@ -132,11 +132,11 @@ namespace PhoneBook.Logic.Handlers
                         department = new Department();
                         string[] mass = line.Split(';');
 
-                        employee.Name = mass[1];
-                        employee.Position = mass[3];
+                        employee.Name = mass[0];
+                        employee.Position = mass[2];
 
                         var choosenEmployee = await _context.Employees
-                                .Where(x => x.Name_Upper.Equals(mass[1].ToUpper()) && x.Position_Upper.Equals(mass[3].ToUpper()))
+                                .Where(x => x.Name_Upper.Equals(mass[0].ToUpper()) && x.Position_Upper.Equals(mass[2].ToUpper()))
                                 .FirstOrDefaultAsync();
 
                         if (choosenEmployee != null)
@@ -147,7 +147,7 @@ namespace PhoneBook.Logic.Handlers
                         else
                         {
                             department = await _context.Departments
-                                                        .Where(x => x.Name == mass[2])
+                                                        .Where(x => x.Name == mass[1])
                                                         .Select(d => _mapper.Map<Department>(d))
                                                         .FirstOrDefaultAsync();
 
