@@ -24,7 +24,6 @@ export class EmployeeCreateComponent implements OnInit {
       telephone: [''],
       mobile: [''],
       office: [''],
-      email: [''],
       departmentId: ['', Validators.required]
       });
     }

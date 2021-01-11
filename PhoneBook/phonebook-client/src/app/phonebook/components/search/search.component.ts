@@ -1,9 +1,10 @@
+import { AuthService } from './../../api/auth.service';
 import { Employee } from './../../model/employee';
 import { EmployeesService } from './../../api/employees.service';
 import { switchMap } from 'rxjs/operators';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-search',
@@ -12,8 +13,11 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class SearchComponent implements OnInit {
   employees: Employee[] = [];
+  logged: boolean;
 
-  constructor(private route: ActivatedRoute, private employeesService: EmployeesService) {
+  constructor(private route: ActivatedRoute, private employeesService: EmployeesService, private authService: AuthService,
+              private router: Router) {
+    this.updateComponent();
     this.route.paramMap
     .pipe(
       switchMap(m => {
@@ -30,6 +34,21 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  editButtonClick(employeeId: number) {
+    this.router.navigate(['/employee/edit', employeeId]);
+  }
+
+  updateComponent() {
+    this.authService.getRole()
+    .subscribe(result => {
+      this.logged = JSON.parse(result);
+    },
+    (err: HttpErrorResponse) => {
+      return console.log(err.error);
+    }
+    );
   }
 
 }

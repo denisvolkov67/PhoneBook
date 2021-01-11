@@ -23,53 +23,46 @@
 .line {
   width: 100%;
   margin-left: 0;
-  // height: 30px;
+}
+.line div{
+  padding: 2px 0px;
 }
 .name {
-  width: 17%;
+  width: 24%;
   float: left;
-  // text-align: center;
   margin: 0 1px 1px 10px;
   display: table;
 }
 .position {
-  width: 17%;
+  width: 21%;
   float: left;
   text-align: center;
   margin: 0 1px 1px 0;
   display: table;
 }
 .telephone {
-  width: 13%;
-  float: left;
-  text-align: center;
-  margin: 0 1px 1px 0;
-  display: table;
-}
-.mobile {
   width: 15%;
   float: left;
   text-align: center;
   margin: 0 1px 1px 0;
   display: table;
 }
-.email {
-  width: 20%;
-  height: 50px;
+.mobile {
+  width: 17%;
   float: left;
   text-align: center;
   margin: 0 1px 1px 0;
   display: table;
 }
 .office {
-  width: 8%;
+  width: 9%;
   float: left;
   text-align: center;
   margin: 0 1px 1px 0;
   display: table;
 }
 .button {
-  width: 8%;
+  width: 10%;
   min-width: 135px;
   float: right;
   text-align: center;

@@ -26,14 +26,12 @@
   <div class="mobile">
     Мобильный телефон
   </div>
-  <div class="email">
-    Электронная почта
-  </div>
   <div class="office ">
     Кабинет
   </div>
-  <div class="line" *ngFor="let employee of employees; let index = index">
-   <div class="line row" *ngIf="employee" [ngClass]="{'backgroud-color': 0 === index % 2}">
+</div>
+<div class="line" *ngFor="let employee of employees; let index = index">
+  <div class="line row" *ngIf="employee" [ngClass]="{'backgroud-color': 0 === index % 2}">
     <div class="name">
       {{employee?.name}}
     </div>
@@ -46,9 +44,6 @@
     <div class="mobile">
       {{employee?.mobile}}
     </div>
-    <div class="email">
-      <a href="mailto:{{employee?.email}}">{{employee?.email}}</a>
-    </div>
     <div class="office">
       {{employee?.office}}
     </div>
@@ -57,6 +52,5 @@
         Редактировать
       </button>
     </div>
-
   </div>
 </div>

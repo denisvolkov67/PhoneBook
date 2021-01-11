@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace PhoneBook.Logic.Models
 {
     public class Employee
@@ -17,8 +14,6 @@ namespace PhoneBook.Logic.Models
         public string Mobile { get; set; }
 
         public string Office { get; set; }
-
-        public string Email { get; set; }
 
         public string DepartmentId { get; set; }
     }

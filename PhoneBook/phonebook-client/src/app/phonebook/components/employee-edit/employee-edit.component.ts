@@ -59,7 +59,6 @@ export class EmployeeEditComponent implements OnInit {
       telephone: employee.telephone,
       mobile: employee.mobile,
       office: employee.office,
-      email: employee.email,
       departmentId: employee.departmentId
     });
   }

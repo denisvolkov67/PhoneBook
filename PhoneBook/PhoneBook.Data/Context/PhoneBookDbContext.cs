@@ -22,7 +22,7 @@ namespace PhoneBook.Data.Context
 
             try
             {
-                //using (StreamReader sr = new StreamReader(@"e:\Employee.csv", System.Text.Encoding.Default))
+                //using (StreamReader sr = new StreamReader(@"e:\TEMP\Employee.csv", System.Text.Encoding.Default))
                 using (StreamReader sr = new StreamReader(@"c:\inetpub\wwwroot\phoneBook.api\Employee.csv", System.Text.Encoding.Default))
                 {
                     string line;
@@ -42,7 +42,7 @@ namespace PhoneBook.Data.Context
                     }
                 }
 
-                //using (StreamReader sr = new StreamReader(@"e:\departments.csv", System.Text.Encoding.Default))
+                //using (StreamReader sr = new StreamReader(@"e:\TEMP\Departments.csv", System.Text.Encoding.Default))
                 using (StreamReader sr = new StreamReader(@"c:\inetpub\wwwroot\phoneBook.api\Departments.csv", System.Text.Encoding.Default))
                 {
                     string line;
@@ -61,7 +61,6 @@ namespace PhoneBook.Data.Context
 
             modelBuilder.Entity<EmployeeDb>().Property(x => x.Name).HasColumnType("TEXT COLLATE NOCASE");
             modelBuilder.Entity<EmployeeDb>().Property(x => x.Position).HasColumnType("TEXT COLLATE NOCASE");
-            modelBuilder.Entity<EmployeeDb>().Property(x => x.Email).HasColumnType("TEXT COLLATE NOCASE");
 
             modelBuilder.Entity<EmployeeDb>().HasData(
                 list.ToArray());
