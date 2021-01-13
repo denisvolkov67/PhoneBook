@@ -51,6 +51,17 @@ namespace PhoneBook.Web.Controllers
             return departments.HasValue ? (IActionResult)Ok(departments.Value) : NotFound();
         }
 
+        [HttpGet("departments/getPrevious/{id}")]
+        [SwaggerResponse(HttpStatusCode.OK, typeof(Department), Description = "Success")]
+        [SwaggerResponse(HttpStatusCode.NotFound, typeof(void), Description = "Department not found")]
+        [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
+        public async Task<IActionResult> GetPreviousDepartmentAsync(string id)
+        {
+            var department = await _mediator.Send(new GetPreviousDepartment(id));  
+
+            return department.HasValue ? (IActionResult)Ok(department.Value) : NotFound();
+        }
+
         [HttpGet("departments/getTopLevel")]
         [SwaggerResponse(HttpStatusCode.OK, typeof(IEnumerable<Department>), Description = "Success")]
         [SwaggerResponse(HttpStatusCode.NotFound, typeof(void), Description = "Departments not found")]

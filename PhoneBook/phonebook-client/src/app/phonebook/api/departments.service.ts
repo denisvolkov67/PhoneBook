@@ -97,6 +97,47 @@ export class DepartmentsService {
         );
     }
 
+        /**
+     *
+     *
+     * @param id
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public departmentsGetPreviousDepartment(id: string, observe?: 'body', reportProgress?: boolean): Observable<Department>;
+    public departmentsGetPreviousDepartment(id: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Department>>;
+    public departmentsGetPreviousDepartment(id: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Department>>;
+    public departmentsGetPreviousDepartment(id: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling departmentsGetPreviousDepartment.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+
+        return this.httpClient.request<Department>('get',`${this.basePath}/departments/getPrevious/${encodeURIComponent(String(id))}`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
     /**
      *
      *
