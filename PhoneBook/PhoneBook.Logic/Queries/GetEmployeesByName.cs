@@ -9,9 +9,12 @@ namespace PhoneBook.Logic.Queries
     {
         public string Name { get; set; }
 
-        public GetEmployeesByName(string name)
+        public string Login { get; set; }
+
+        public GetEmployeesByName(string name, string login)
         {
             Name = name;
+            Login = login;
         }
     }
 }

@@ -1,3 +1,4 @@
+import { FavoritesComponent } from './phonebook/components/favorites/favorites.component';
 import { EmployeeImportComponent } from './phonebook/components/employee-import/employee-import.component';
 import { EmployeeInfoComponent } from './phonebook/components/employee-info/employee-info.component';
 import { EmployeeCreateComponent } from './phonebook/components/employee-create/employee-create.component';
@@ -18,6 +19,7 @@ const routes: Routes = [
   {path: 'employee/edit/:id', component: EmployeeEditComponent},
   {path: 'employee-import', component: EmployeeImportComponent},
   {path: 'employees/:name', component: SearchComponent},
+  {path: 'favorites/:login', component: FavoritesComponent},
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: '**', component: NotExistsComponent }
 ];

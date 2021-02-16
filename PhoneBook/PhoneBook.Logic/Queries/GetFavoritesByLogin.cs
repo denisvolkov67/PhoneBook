@@ -5,15 +5,12 @@ using System.Collections.Generic;
 
 namespace PhoneBook.Logic.Queries
 {
-    public class GetEmployeesByDepartmentId : IRequest<Maybe<IEnumerable<Employee>>>
+    public class GetFavoritesByLogin : IRequest<Maybe<IEnumerable<Favorites>>>
     {
-        public string DepartmentId { get; set; }
-
         public string Login { get; set; }
 
-        public GetEmployeesByDepartmentId(string id, string login)
+        public GetFavoritesByLogin(string login)
         {
-            DepartmentId = id;
             Login = login;
         }
     }

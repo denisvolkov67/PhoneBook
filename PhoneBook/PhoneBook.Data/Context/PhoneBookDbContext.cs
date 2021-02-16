@@ -14,10 +14,18 @@ namespace PhoneBook.Data.Context
 
         public DbSet<EmployeeDb> Employees { get; set; }
         public DbSet<DepartmentDb> Departments { get; set; }
+        public DbSet<FavoritesDb> Favorites { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            List<EmployeeDb> list = new List<EmployeeDb>();
+            //Import(modelBuilder);
+
+            base.OnModelCreating(modelBuilder);
+        }
+
+        private ModelBuilder Import (ModelBuilder builder)
+        {
+             List < EmployeeDb > list = new List<EmployeeDb>();
             List<DepartmentDb> listDepartment = new List<DepartmentDb>();
 
             try
@@ -57,17 +65,17 @@ namespace PhoneBook.Data.Context
                 }
             }
             catch { }
-            
 
-            modelBuilder.Entity<EmployeeDb>().Property(x => x.Name).HasColumnType("TEXT COLLATE NOCASE");
-            modelBuilder.Entity<EmployeeDb>().Property(x => x.Position).HasColumnType("TEXT COLLATE NOCASE");
 
-            modelBuilder.Entity<EmployeeDb>().HasData(
+            builder.Entity<EmployeeDb>().Property(x => x.Name).HasColumnType("TEXT COLLATE NOCASE");
+            builder.Entity<EmployeeDb>().Property(x => x.Position).HasColumnType("TEXT COLLATE NOCASE");
+
+            builder.Entity<EmployeeDb>().HasData(
                 list.ToArray());
-            modelBuilder.Entity<DepartmentDb>().HasData(
+            builder.Entity<DepartmentDb>().HasData(
                 listDepartment.ToArray());
 
-            base.OnModelCreating(modelBuilder);
+            return builder;
         }
     }
 }

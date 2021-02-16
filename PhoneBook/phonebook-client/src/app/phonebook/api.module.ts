@@ -1,3 +1,4 @@
+import { FavoritesService } from './api/favorites.service';
 import { EmployeeImportComponent } from './components/employee-import/employee-import.component';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { AuthService } from './api/auth.service';
@@ -16,6 +17,7 @@ import { EmployeeEditComponent } from './components/employee-edit/employee-edit.
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EmployeeCreateComponent } from './components/employee-create/employee-create.component';
 import { EmployeeInfoComponent } from './components/employee-info/employee-info.component';
+import { FavoritesComponent } from './components/favorites/favorites.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { EmployeeInfoComponent } from './components/employee-info/employee-info.
     EmployeeEditComponent,
     EmployeeCreateComponent,
     EmployeeInfoComponent,
-    EmployeeImportComponent
+    EmployeeImportComponent,
+    FavoritesComponent
   ],
   imports:
   [
@@ -45,7 +48,8 @@ import { EmployeeInfoComponent } from './components/employee-info/employee-info.
   providers: [
     AuthService,
     DepartmentsService,
-    EmployeesService
+    EmployeesService,
+    FavoritesService
   ]
 })
 export class ApiModule {

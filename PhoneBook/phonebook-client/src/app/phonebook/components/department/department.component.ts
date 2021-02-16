@@ -1,3 +1,6 @@
+import { DeleteFavoritesByLoginIdCommand } from './../../model/deleteFavoritesByLoginIdCommand';
+import { CreateFavoritesCommand } from './../../model/createFavoritesCommand';
+import { FavoritesService } from './../../api/favorites.service';
 import { AuthService } from './../../api/auth.service';
 import { Department } from './../../model/department';
 import { DepartmentsService } from './../../api/departments.service';
@@ -19,9 +22,11 @@ export class DepartmentComponent implements OnInit {
   department: Department;
   prevDepartmentLink: string;
   logged: boolean;
+  login: string;
 
   constructor(private route: ActivatedRoute, private router: Router, private authService: AuthService,
-              private departmentsService: DepartmentsService, private employeesService: EmployeesService)   {
+              private departmentsService: DepartmentsService, private employeesService: EmployeesService,
+              private favoritesService: FavoritesService)   {
 
     this.getRole();
 
@@ -33,6 +38,9 @@ export class DepartmentComponent implements OnInit {
 
     this.getEmployeesByDepartmentId();
 
+    this.authService.getName().subscribe(account => {
+      this.login = account;
+    });
   }
 
   ngOnInit() {
@@ -115,6 +123,32 @@ export class DepartmentComponent implements OnInit {
       });
   }
 
+  addFavoritesClick(id: number){
+    const favoriteAdd: CreateFavoritesCommand = {
+        login: this.login,
+        employeeId: id
+    };
 
+    this.favoritesService.favoritesCreateFavorites(favoriteAdd)
+    .subscribe(result =>
+      this.getEmployeesByDepartmentId()),
+    (err: HttpErrorResponse) => {
+      return console.log(err.error);
+    };
+
+  }
+
+  deleteFavoritesClick(id: number){
+    const favoriteDelete: DeleteFavoritesByLoginIdCommand = {
+        login: this.login,
+        employeeId: id
+    };
+
+    this.favoritesService.favoritesDeleteFavoritesByLoginId(favoriteDelete)
+    .subscribe(result =>
+      this.getEmployeesByDepartmentId()),
+    (err: HttpErrorResponse) => {
+      return console.log(err.error);
+    };
+  }
 }
-

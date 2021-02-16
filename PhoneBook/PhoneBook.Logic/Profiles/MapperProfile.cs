@@ -23,7 +23,7 @@ namespace PhoneBook.Logic.Profiles
                 .ReverseMap()
                 .ForMember(dest => dest.DepartmentId, e => e.MapFrom(src => src.DepartmentDbId));
 
-            CreateMap<UpdateEmployeeCommand, Employee>();
+            CreateMap<UpdateEmployeeCommand, Employee>(); 
 
             CreateMap<UpdateEmployeeCommand, EmployeeDb>()
                 .ForMember(dest => dest.DepartmentDbId, e => e.MapFrom(src => src.DepartmentId))
@@ -34,6 +34,13 @@ namespace PhoneBook.Logic.Profiles
 
             CreateMap<Department, DepartmentDb>()
                 .ReverseMap();
+
+            CreateMap<Favorites, FavoritesDb>()
+                .ForMember(dest => dest.WorkerDb, e => e.MapFrom(src => src.Worker))
+                .ReverseMap()
+                .ForMember(dest => dest.Worker, e => e.MapFrom(src => src.WorkerDb));
+
+            CreateMap<CreateFavoritesCommand, FavoritesDb>();
         }
 
     }

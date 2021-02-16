@@ -1,0 +1,45 @@
+<h3>
+  Избранное
+</h3>
+
+<div class="line row" *ngIf="favorites?.length > 0">
+  <div class="name">
+    ФИО
+  </div>
+  <div class="position">
+    Должность
+  </div>
+  <div class="telephone">
+    Рабочий телефон
+  </div>
+  <div class="mobile">
+    Мобильный телефон
+  </div>
+  <div class="office ">
+    Кабинет
+  </div>
+</div>
+<div class="line" *ngFor="let favorite of favorites; let index = index">
+  <div class="line row" *ngIf="favorite" [ngClass]="{'backgroud-color': 0 === index % 2}">
+    <div class="name">
+      {{favorite?.worker?.name}}
+    </div>
+    <div class="position">
+      {{favorite?.worker?.position}}
+    </div>
+    <div class="telephone">
+      {{favorite?.worker?.telephone}}
+    </div>
+    <div class="mobile">
+      {{favorite?.worker?.mobile}}
+    </div>
+    <div class="office">
+      {{favorite?.worker?.office}}
+    </div>
+    <div class="button">
+      <button class="btn btn-primary" (click)="deleteButtonClick(favorite.id)">
+        Удалить из избранного
+      </button>
+    </div>
+  </div>
+</div>

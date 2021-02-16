@@ -1,36 +1,44 @@
 <div class="line row">
-  <div class="name">
+  <div class="name" [ngClass]="(logged)?'name1':'name2'">
     ФИО
   </div>
-  <div class="position">
+  <div class="position" [ngClass]="(logged)?'position1':'position2'">
     Должность
   </div>
-  <div class="telephone">
+  <div class="telephone" [ngClass]="(logged)?'telephone1':'telephone2'">
     Рабочий телефон
   </div>
-  <div class="mobile">
+  <div class="mobile" [ngClass]="(logged)?'mobile1':'mobile2'">
     Мобильный телефон
   </div>
-  <div class="office ">
+  <div class="office" [ngClass]="(logged)?'office1':'office2'">
     Кабинет
   </div>
 </div>
 <div class="line" *ngFor="let employee of employees; let index = index">
   <div class="line row" *ngIf="employee" [ngClass]="{'backgroud-color': 0 === index % 2}">
-    <div class="name">
+    <div class="name" [ngClass]="(logged)?'name1':'name2'">
       {{employee?.name}}
     </div>
-    <div class="position">
+    <div class="position" [ngClass]="(logged)?'position1':'position2'">
       {{employee?.position}}
     </div>
-    <div class="telephone">
+    <div class="telephone" [ngClass]="(logged)?'telephone1':'telephone2'">
       {{employee?.telephone}}
     </div>
-    <div class="mobile">
+    <div class="mobile" [ngClass]="(logged)?'mobile1':'mobile2'">
       {{employee?.mobile}}
     </div>
-    <div class="office">
+    <div class="office" [ngClass]="(logged)?'office1':'office2'">
       {{employee?.office}}
+    </div>
+    <div class="favorites">
+      <button class="" *ngIf="!employee?.favorites" (click)="addFavoritesClick(employee.id)">
+        <img src="../assets/icons/star-empty.png">
+      </button>
+      <button class="" *ngIf="employee?.favorites" (click)="deleteFavoritesClick(employee.id)">
+        <img src="../assets/icons/star-fill.png">
+      </button>
     </div>
     <div class="button" *ngIf="logged">
       <button class="btn btn-primary" (click)="editButtonClick(employee.id)">

@@ -56,8 +56,12 @@ namespace PhoneBook.Web.Controllers
                 _logger.LogError($"Incorrect value for the employee's DepartmentId was set. '{id}' - is null...");
                 return BadRequest();
             }
-            
-            var employees = await _mediator.Send(new GetEmployeesByDepartmentId(id));
+
+            string login = HttpContext.User.Identity.Name;
+            if (login.Contains(@"BTRC\"))
+                login = login.Substring(5);
+
+            var employees = await _mediator.Send(new GetEmployeesByDepartmentId(id, login));
 
             return employees.HasValue ? (IActionResult)Ok(employees.Value) : NotFound();
         }
@@ -68,7 +72,11 @@ namespace PhoneBook.Web.Controllers
         [SwaggerResponse(HttpStatusCode.BadRequest, typeof(void), Description = "Invalid data")]
         public async Task<IActionResult> GetEmployeesByNameAsync(string name)
         {
-            var employees = await _mediator.Send(new GetEmployeesByName(name));
+            string login = HttpContext.User.Identity.Name;
+            if (login.Contains(@"BTRC\"))
+                login = login.Substring(5);
+
+            var employees = await _mediator.Send(new GetEmployeesByName(name, login));
 
             return employees.HasValue ? (IActionResult)Ok(employees.Value) : NotFound();
         }

@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'Phone Book';
   phoneBookGroup: FormGroup;
-  userName: string;
+  login: string;
 
   constructor(private fb: FormBuilder, private employeesService: EmployeesService, private router: Router,
               private authService: AuthService) {
@@ -21,7 +21,7 @@ export class AppComponent implements OnInit {
     });
 
     authService.getName().subscribe(account => {
-      this.userName = account;
+      this.login = account;
     });
   }
 

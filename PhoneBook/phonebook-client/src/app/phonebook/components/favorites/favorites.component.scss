@@ -1,3 +1,28 @@
+
+h3 {
+  text-align: center;
+}
+.department-name {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  width: 100%;
+  color: #7701AF;
+}
+.department-header {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  width: 100%;
+}
+.department-line {
+  width: 100%;
+  margin-left: 0;
+  height: 35px;
+}
+.backgroud-color {
+  background-color: #e4e4e4;
+}
 .line {
   width: 100%;
   margin-left: 0;
@@ -5,31 +30,18 @@
 .line div{
   padding: 2px 0px;
 }
-.backgroud-color {
-  background-color: #e4e4e4;
-}
 .name {
+  width: 24%;
   float: left;
   margin: 0 1px 1px 10px;
   display: table;
 }
-.name1 {
-  width: 24%;
-}
-.name2 {
-  width: 25%;
-}
 .position {
+  width: 21%;
   float: left;
   text-align: center;
   margin: 0 1px 1px 0;
   display: table;
-}
-.position1 {
-  width: 21%;
-}
-.position2 {
-  width: 23%;
 }
 .telephone {
   width: 15%;
@@ -38,24 +50,12 @@
   margin: 0 1px 1px 0;
   display: table;
 }
-.telephone1 {
-  width: 15%;
-}
-.telephone2 {
-  width: 17%;
-}
 .mobile {
   width: 17%;
   float: left;
   text-align: center;
   margin: 0 1px 1px 0;
   display: table;
-}
-.mobile1 {
-  width: 17%;
-}
-.mobile2 {
-  width: 18%;
 }
 .office {
   width: 9%;
@@ -64,15 +64,9 @@
   margin: 0 1px 1px 0;
   display: table;
 }
-.office1 {
-  width: 9%;
-}
-.office2 {
-  width: 11%;
-}
 .button {
   width: 10%;
-  min-width: 135px;
+  min-width: 200px;
   float: right;
   text-align: center;
 }

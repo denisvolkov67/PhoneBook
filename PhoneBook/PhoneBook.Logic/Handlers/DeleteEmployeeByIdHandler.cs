@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PhoneBook.Data.Context;
 using PhoneBook.Logic.Command;
@@ -25,8 +26,8 @@ namespace PhoneBook.Logic.Handlers
         public async Task<bool> Handle(DeleteEmployeeByIdCommand request, CancellationToken cancellationToken)
         {
             var deletedEmployee = _context.Employees
-                    .Where(x => x.Id == request.Id)
-                    .FirstOrDefault();
+                                        .Where(x => x.Id == request.Id)
+                                        .FirstOrDefault();
 
             if (deletedEmployee == null)
             {
@@ -34,7 +35,13 @@ namespace PhoneBook.Logic.Handlers
                 return await Task.FromResult(false);
             }
 
+            var deletedFavorites = _context.Favorites
+                            .Include(e => e.WorkerDb)
+                            .Where(x => x.WorkerDb.Id == request.Id)
+                            .FirstOrDefault();
+
             _context.Remove(deletedEmployee);
+            _context.Remove(deletedFavorites);
             await _context.SaveChangesAsync(cancellationToken);
 
             return await Task.FromResult(true);

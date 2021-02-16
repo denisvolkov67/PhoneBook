@@ -30,15 +30,30 @@ namespace PhoneBook.Logic.Handlers
 
         public async Task<Maybe<IEnumerable<Employee>>> Handle(GetEmployeesByName request, CancellationToken cancellationToken)
         {
+            var favorites = await _context.Favorites
+                .Include(e => e.WorkerDb)
+                .Where(x => x.Login.Equals(request.Login))
+                .OrderBy(o => o.WorkerDb.Name)
+                .Select(b => _mapper.Map<Favorites>(b))
+                .ToListAsync()
+                .ConfigureAwait(false);
+
             var result = await _context.Employees
                 .Where(x => x.Name_Upper.Contains(request.Name.ToUpper()) || x.Position_Upper.Contains(request.Name.ToUpper()))
-                //.Where(x => x.Name.ToUpper().Contains(request.Name.ToUpper()))
-                //.Where(x => x.Name.Contains(request.Name, StringComparison.OrdinalIgnoreCase))
-                //.Where(x => EF.Functions.Like(x.Name.ToLower(), $"%{request.Name}%"))
                 .OrderBy(o => o.Name)
                 .Select(b => _mapper.Map<Employee>(b))
                 .ToListAsync()
                 .ConfigureAwait(false);
+
+            if (favorites != null)
+            {
+                for (int i = 0; i < favorites.Count; i++)
+                    for (int j = 0; j < result.Count; j++)
+                        if (favorites[i].Worker.Equals(result[j]))
+                            result[j].Favorites = true;
+            }
+
+
 
             if (result == null)
             {

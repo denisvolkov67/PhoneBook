@@ -16,7 +16,12 @@ namespace PhoneBook.Web.Controllers
         public string GetName()
         {
             IPrincipal p = HttpContext.User;
-            return p.Identity.Name;
+            string login = p.Identity.Name;
+            if (login.Contains(@"BTRC\"))
+            {
+                login = login.Substring(5);
+            }
+            return login;
         }
 
         [Route("account/role")]
